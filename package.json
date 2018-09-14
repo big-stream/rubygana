@@ -1,0 +1,30 @@
+{
+  "name": "rubygana",
+  "version": "0.1.0",
+  "description": "漢字にルビ(ふりがな)を付けちゃうぞ。",
+  "main": "lib/index.js",
+  "bin": {
+    "rubygana": "bin/rubygana.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "scripts/"
+  ],
+  "scripts": {
+    "minitest": "scripts/minitest.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/big-stream/rubygana.git"
+  },
+  "author": {
+    "name": "ころん:すとりーむ"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "kuromoji": "^0.1.2",
+    "cheerio": "^1.0.0-rc.2",
+    "marked": "^0.5.0"
+  }
+}
