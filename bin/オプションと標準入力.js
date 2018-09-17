@@ -1,5 +1,5 @@
 /*!
- * オプションと標準入力.js 0.1
+ * オプションと標準入力.js 0.2.0
  *
  *  MIT License
  *  ©  2018 ころん:すとりーむ
@@ -20,7 +20,7 @@ function 標準入力(コールバック, 設定) {
     lang: (process.env.LANG && process.env.LANG.startsWith('ja_JP')) ? 'ja_JP' : 'C'
   }
   */
-  let conf = 設定 === undefined ? {} : 設定
+  const conf = 設定 === undefined ? {} : 設定
   conf.stdin = conf.stdin === undefined ? true : void(0)
   conf.epipe = conf.epipe === undefined ? true : void(0)
   conf.encoding = conf.encoding === undefined ? 'utf8' : void(0)
@@ -63,78 +63,177 @@ function 標準入力(コールバック, 設定) {
 
 //-------------------------------------------------------------------------------
 
-module.exports.オプション = オプション
+module.exports.オプション解析 = オプション解析
 
-function オプション(引数あり = [], 引数なし = [], 引数省略可 = [], 排他的 = []) {
-  // 関数引数の検証
-  const temp = [引数あり, 引数なし, 引数省略可, 排他的]
-  temp.forEach((e, i) => {
-    if (!Array.isArray(e)) {
-      throw 'コマンドオプション解析()の引数' + (i + 1) + 'はArray型'
-    }
-    e.forEach((e) => {
-      if (!Array.isArray(e) && typeof e !== 'string' && i > 3) {
-        throw 'コマンドオプション解析()の引数' + (i + 1) + 'の配列内容は文字列かArray型'
+/*
+ * 特徴:
+ * 引数あり・なし・省略可の3種類のオプションリストと、排他的リストを指定
+ *
+ * [オプション形式]
+ * ロング形: --から始まる。--name, --long-name など(予約語あり)
+ * 一文字形: -に加えて一文字。-a, -あ など
+ * 短縮形(自動判別): ロング形式を前半3文字以上に短縮したもの。--nameを--naなど
+ * 短縮形の曖昧さ:先にマッチ優先(引数あり・なし、省略可の順で)。曖昧プロパティに情報。
+ * 連綿形(自動判別): 一文字形を-の後に連ねたもの。-a,-b,-cを-abcなど
+ * 引数のあるものは末尾のみ
+ *
+ * [オプション引数]
+ * 引数あり: 次にくる引数が-から始まるものも、オプション引数とみなす
+ * 引数省略可: 次の引数が-から始まれば、省略とみなす
+ *
+ * [オペランド]
+ * オプションでもその引数でもないものか、
+ * ただの「--」を指定したら、それ以降のすべての引数
+ *
+ * [標準入力希望]
+ * ただの「-」の指定
+ *
+ * [オプションのプロパティ]
+ * プロパティ名: ロング形・一文字形で最長のもの(前半-を削り、途中-を_に変換)
+ * データ型: Array。下記を格納。
+ *  - 引数: string
+ *  - 引数なし・省略: true
+ *  - 引数ありを末尾引数にすると: undefined
+ * 他に予約語プロパティに情報を格納
+ *
+ */
+function オプション解析(引数あり = [], 引数なし = [], 引数省略可 = [], 排他的 = []) {
+
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  // 引数あり, 引数なし, 引数省略可は、それぞれオプションリスト
+  const オプションリスト例 = [
+    // Array
+    ['-o', '--output'], // --oなど短縮形は自動
+    ['-V', '--version', '--バージョン', '-ば'], // いくつでも
+    // 別名がないならstringも可
+    '-a',
+  ]
+  const 排他的例 = [
+    // Arrayのみ
+    ['--group-a', '--group-b', '--group-b'], // コマンドグループ
+    //
+    ['--group-a', '--output'],
+    ['--group-a', '-a'],
+    ['--help', '--version', '--debug'],
+  ]
+
+  // プロパティ名使用のため'--標準入力'などのオプション名は禁止
+  const 予約語 = [
+    'オペランド希望', // 引数「--」を使用: true
+    '標準入力希望', // 引数「-」を使用: trueのArray
+    'オペランド', // オプションでもその引数でもないもの: Array
+    '未指定', // 定義オプションで未指定のもの: Array
+    '引数必須', // 引数必須なのに未指定のもの: Array
+    '引数省略', // 引数省略可で省略したもの: Array
+    '不明', // 定義にないオプション: Array
+    '曖昧', // 短縮形に曖昧さがあるオプション: Array(の中にArray)
+    '排他的', // 排他的なのに使用したもの: Array(の中にArray)
+    'グループ', // コマンドグループ(他関数で)
+    '標準入力', // 標準入力の有無など(他関数で)
+  ]
+
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  引数1から3の検証(引数あり, 引数なし, 引数省略可)
+
+  function 引数1から3の検証(...arr) {
+    const msg1 = 'コマンドオプション解析()の引数'
+    const msg2 = ': 配列[配列[文字列]]か、配列[文字列]かのみ'
+    const msg3 = '予約語のため定義不可のオプション名: '
+    arr.forEach((オプションリスト, i) => {
+      if (!Array.isArray(オプションリスト)) {
+        throw msg1 + (i + 1) + msg2
       }
-      if (!Array.isArray(e) && i === 3) {
-        throw 'コマンドオプション解析()の引数4の配列内容はArray型'
-      }
-      // 配列最下層中身は文字列
-      if (Array.isArray(e)) {
-        e.forEach(e => {
-          if (typeof e !== 'string') {
-            throw 'コマンドオプション解析()の引数' + (i + 1) + 'の最下層配列の内容は文字列'
-          }
-        })
-      } else if (typeof e !== 'string') {
-        throw 'コマンドオプション解析()の引数' + (i + 1) + 'の最下層配列の内容は文字列'
-      }
-    })
-  })
-
-  // オプションやその引数を格納していく
-  let option = {}
-
-  let 引数あり連綿str
-    // 引数なしや引数省略可オプションの省略形(-aなど)を-abcdのように複数連ねた正規表現
-  let 連綿オプションre = get連綿オプションre()
-
-  function get連綿オプションre() {
-    const 省略形re = /^-[^- ]$/
-    let a = get連綿str([引数なし, 引数省略可])
-    引数あり連綿str = get連綿str([引数あり])
-
-    function get連綿str(arr) {
-      let str = ''
-      arr.forEach(e => {
-        e.forEach(e => {
-          if (Array.isArray(e)) {
-            e.forEach(e => {
-              if (省略形re.test(e)) {
-                str += e.slice(1)
+      オプションリスト.forEach((e) => {
+        if (!Array.isArray(e) && typeof e !== 'string') {
+          throw msg1 + (i + 1) + msg2
+        }
+        if (Array.isArray(e)) {
+          e.forEach(str => {
+            if (typeof str !== 'string') {
+              throw msg1 + (i + 1) + msg2
+            } else {
+              if (予約語.includes(str.replace(/-/g, '_').replace(/^_+/, ''))) {
+                throw msg3 + str
               }
-            })
-          } else {
-            if (省略形re.test(e)) {
+            }
+          })
+        } else if (typeof e !== 'string') {
+          throw msg1 + (i + 1) + msg2
+        } else {
+          if (予約語.includes(e.replace(/-/g, '_').replace(/^_+/, ''))) {
+            throw msg3 + e
+          }
+        }
+      })
+    })
+  }
+
+  const 全オプションリスト = 引数あり.concat(引数なし, 引数省略可)
+  引数4の検証()
+
+  function 引数4の検証() {
+    排他的.forEach(e => {
+      if (!Array.isArray(e)) {
+        throw 'コマンドオプション解析()の引数4(排他的リスト): 配列[配列[文字列]]のみ'
+      }
+      e.forEach(str => {
+        if (!オプションなら最長オプション名(全オプションリスト, str)) { // 定義にないオプションが混ざっている
+          throw 'コマンドオプション解析()の引数4(排他的リスト)にオプション定義にないもの: ' + str
+        }
+      })
+    })
+  }
+
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  // 連綿オプション: 短縮形(-aなど)を-abcdのように複数連ねたケース
+  // 引数あるものは必ず末尾
+  // 必須x なしa 省略可b とすると
+  // -ab -ba -ax -abx
+  const a = get連綿str(引数なし, 引数省略可)
+  const 引数あり連綿str = get連綿str(引数あり)
+  const 連綿オプションre = new RegExp('^-([' + a + ']{2,}|[' + a + ']+[' + 引数あり連綿str + '])$')
+
+  function get連綿str(...オプション定義) {
+    const 一文字形re = /^-[^- ]$/
+    let str = ''
+    オプション定義.forEach(e => {
+      e.forEach(e => {
+        if (Array.isArray(e)) {
+          e.forEach(e => {
+            if (一文字形re.test(e)) {
               str += e.slice(1)
             }
+          })
+        } else {
+          if (一文字形re.test(e)) {
+            str += e.slice(1)
           }
-        })
+        }
       })
-      return str
-    }
-    // 必須x なしa 省略可b とすると
-    // -ab -ba -ax -abx
-    return new RegExp('^-([' + a + ']{2,}|[' + a + ']+[' + 引数あり連綿str + '])$')
+    })
+    return str
   }
+
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  // オプションやその引数を格納していく
+  const option = {}
 
   // 2以降が実際のコマンド引数
   const 引数 = process.argv.slice(2)
 
   let 飛ばす = false
-  let 引数必須なのに無い = false // フラグ
   let オペランド希望 = false
   引数.forEach((e, i) => {
+
+    // オプションに付けた引数の場合
+    if (飛ばす) {
+      飛ばす = false
+      return // 次の引数へ
+    }
 
     // 引数「--」以降の引数はすべてオペランド扱い
     if (!オペランド希望 && e === '--') {
@@ -154,68 +253,62 @@ function オプション(引数あり = [], 引数なし = [], 引数省略可 =
       return // 次の引数へ
     }
 
-    // オプションに付けた引数の場合
-    if (飛ばす) {
-      飛ばす = false
-      return // 次の引数へ
+    // 曖昧オプションなら、先にマッチしたもので確定(引数の有無等では判定しない)
+    const 曖昧か = 曖昧オプション(全オプションリスト, e)
+    if (曖昧か) {
+      e = 曖昧か // 最長オプション名
     }
-    // 引数ありオプション
-    if (引数ありオプション(e, i)) {
-      return // 次の引数へ
-    }
+    // 以降、曖昧なしとして進む
 
-    function 引数ありオプション(e, i) { // 連綿でも使う
-      if (オプションの解析と格納(e, i)) {
-        // 格納した引数が-から始まるものだった場合、飛ばさない
-        if (引数必須なのに無い) {
-          引数必須なのに無い = false // フラグ
-        } else {
-          飛ばす = true
-        }
-        return true
-      }
-      return false
+    // 引数ありオプション
+    const 引数ありか = オプションなら格納(e, i)
+    if (引数ありか === true) { // 正しく格納
+      飛ばす = true
+      return // 次の引数へ 飛ばす
+    } else if (引数ありか === null) { // 引数ありなのに無い
+      return // 次の引数へ 飛ばさない
     }
 
     // 引数なしオプション単独
-    if (オプションの解析と格納(e)) {
+    if (オプションなら格納(e)) {
       return // 次の引数へ
     }
 
-    // 短縮形オプションを-abcdのように複数連ねるケース
-    if (連綿オプションre.test(e)) { // 引数ありは末尾保証
-      e.slice(1).split('').forEach((c) => {
-        let ハイフン付き = '-' + c
-        if (引数なしオプションなの(ハイフン付き)) {
-          オプションの解析と格納(ハイフン付き)
-        } else { // 引数あり(末尾保証)又は引数省略可
-          // 連綿の末尾(-abcdのd)かつ次の引数がある
-          if (e.slice(-1) === c && 引数[i + 1] !== undefined && !引数[i + 1].startsWith('-')) {
-            if (引数あり連綿str.includes(c)) {
-              引数ありオプション(ハイフン付き, i)
-            } else {
-              オプションの解析と格納(ハイフン付き, i, true)
-              飛ばす = true
-            }
-          } else { // 省略又は引数必須なのに無い場合
-            if (引数あり連綿str.includes(c)) {
-              引数ありオプション(ハイフン付き, i)
-            } else {
-              オプションの解析と格納(ハイフン付き, undefined, true)
-            }
-          }
+    // 連綿オプション
+    if (連綿オプションre.test(e)) { // 引数ありは連綿末尾保証
+      e.slice(1).split('').forEach((c, 連綿インデックス) => {
+        const ハイフン付き = '-' + c
+          // 引数なし
+        if (オプションなら格納(ハイフン付き)) {
+          return // 次の連綿へ
+        }
+        // 引数あり(連綿末尾保証)
+        const 引数ありか = オプションなら格納(ハイフン付き, i)
+        if (引数ありか === true) { // 正しく格納
+          飛ばす = true
+          return
+        } else if (引数ありか === null) { // 引数ありなのに無い
+          return // 飛ばさない
+        }
+        // 引数省略可
+        if (e.length === (連綿インデックス + 2) && !次はオプションの引数じゃないね(引数[i + 1])) {
+          // 連綿の末尾(-abcdのd)かつ省略せず
+          オプションなら格納(ハイフン付き, i, true)
+          飛ばす = true
+        } else { // 省略
+          オプションなら格納(ハイフン付き, undefined, true)
         }
       })
       return // 次の引数へ
     }
 
     // 引数を省略可能なオプション(次の引数が-から始まれば省略とみなす)
-    if (引数[i + 1] === undefined || 引数[i + 1].startsWith('-')) { // 末尾引数も
-      if (オプションの解析と格納(e, undefined, true)) {
+    if (次はオプションの引数じゃないね(引数[i + 1])) { // 末尾引数も
+      if (オプションなら格納(e, undefined, true)) {
         return // 次の引数へ
       }
     } else { // 省略しなかった場合
-      if (オプションの解析と格納(e, i, true)) {
+      if (オプションなら格納(e, i, true)) {
         飛ばす = true
         return // 次の引数へ
       }
@@ -224,91 +317,133 @@ function オプション(引数あり = [], 引数なし = [], 引数省略可 =
     // 不明なオプション
     if (e.startsWith('-')) {
       option.不明 === undefined ? option.不明 = [e] : option.不明.push(e)
+      return // 次の引数へ
     }
 
     // オプションでもその引数でもないもの(オペランド)
     option.オペランド === undefined ? option.オペランド = [e] : option.オペランド.push(e)
   })
 
-  function オプションの解析と格納(e, i, 省略可能か) {
-    let source = 引数なし
-    if (i !== undefined) {
-      source = 引数あり
-    }
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  function オプションなら格納(e, i, 省略可能か) {
+    let name
     if (省略可能か) {
-      source = 引数省略可
+      name = オプションなら最長オプション名(引数省略可, e)
+    } else if (i === undefined) { // 引数なし
+      name = オプションなら最長オプション名(引数なし, e)
+    } else { // 引数あり
+      name = オプションなら最長オプション名(引数あり, e)
+    }
+    if (!name) { // オプションでない
+      return undefined // 格納なし
     }
 
-    function オプションに格納(prop_name) {
-      if (i !== undefined) {
-        if (引数[i + 1] === undefined || 引数[i + 1].startsWith('-')) {
-          引数必須なのに無い = true // フラグ
-          let temp = ハイフン付きの名前に戻す(prop_name)
-          option.引数必須 === undefined ? option.引数必須 = [temp] : option.引数必須.push(temp)
-          option[prop_name] === undefined ? option[prop_name] = [undefined] : option[prop_name].push(undefined)
-        } else {
-          option[prop_name] === undefined ? option[prop_name] = [引数[i + 1]] : option[prop_name].push(引数[i + 1])
-        }
+    const prop = name.replace(/-/g, '_').replace(/^_+/, '')
+    if (i === undefined && 省略可能か === undefined) { // 引数なし
+      option[prop] === undefined ? option[prop] = [true] : option[prop].push(true)
+    } else if (省略可能か) {
+      if (i === undefined) { // 省略
+        option.引数省略 ? option.引数省略.push(name) : option.引数省略 = [name]
+        option[prop] === undefined ? option[prop] = [true] : option[prop].push(true)
+      } else { // 省略せず
+        option[prop] === undefined ? option[prop] = [引数[i + 1]] : option[prop].push(引数[i + 1])
+      }
+    } else { // 引数あり: 次の引数が-から始まるものでも引数とみなす
+      if (引数[i + 1] === undefined) { // 末尾オプション
+        option.引数必須 === undefined ? option.引数必須 = [name] : option.引数必須.push(name)
+        option[prop] === undefined ? option[prop] = [undefined] : option[prop].push(undefined)
+        return null // 格納だけど: 引数ありなのに無い
       } else {
-        option[prop_name] === undefined ? option[prop_name] = [true] : option[prop_name].push(true)
+        option[prop] === undefined ? option[prop] = [引数[i + 1]] : option[prop].push(引数[i + 1])
       }
     }
 
-    // ヒット1回したら抜ける
-    let 該当 = false
-    source.forEach(strOrArray => {
-      if (該当) {
+    return true // 正しく格納
+  }
+
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  function 次はオプションの引数じゃないね(次) {
+    return 次 === undefined || 次.startsWith('-')
+  }
+
+  function オプションなら最長オプション名(オプションリスト, str) {
+    let hit = false
+    let name
+    オプションリスト.forEach(同一オプション => {
+      if (hit) { // 1回hitしたら他のオプションは無視
         return
       }
-      if (typeof strOrArray === 'string') {
-        if (strOrArray === e) {
-          オプションに格納(最長プロパティ名(strOrArray))
-          該当 = true
-        }
-      } else {
-        strOrArray.forEach(str => {
-          if (該当) {
-            return
+      name = ''
+      if (Array.isArray(同一オプション)) {
+        同一オプション.forEach(e => {
+          // 最も長いもの、同数なら先のもの優先
+          if (name.length < e.length) {
+            name = e
           }
-          if (str === e) {
-            オプションに格納(最長プロパティ名(strOrArray)) // strにしない
-            該当 = true
+          if (e === str) {
+            hit = true
           }
         })
+      } else {
+        if (同一オプション === str) {
+          name = str
+          hit = true
+        }
       }
     })
-    return 該当
-  }
-
-  function 最長プロパティ名(strOrArray) { // オプション定義配列 = [strOrArray, strOrArray, ...]
-    // 冒頭ハイフン消してて途中ハイフンをアンダーバーに変換し、その中で一番長いもの
-    // -tと--full-timeならfull_time
-    let prop_name = ''
-    if (typeof strOrArray === 'string') {
-      prop_name = strOrArray.replace(/-/g, '_').replace(/^_/, '').replace(/^_/, '')
+    if (hit) {
+      return name
     } else {
-      strOrArray.forEach(e => {
-        // 最も長いもの、同数なら先のもの優先
-        let temp = e.replace(/-/g, '_').replace(/^_/, '').replace(/^_/, '')
-        if (prop_name.length < temp.length) {
-          prop_name = temp
+      return undefined
+    }
+  }
+
+  function 曖昧オプション(オプションリスト, str) {
+    // 曖昧オプション: --から始まり、前半が一致するものが複数
+    // 完全一致を除く: --abと--ab-cの定義で、--abの使用はok
+    if (!str.startsWith('--') || str === '--') {
+      return
+    }
+    const 前半一致 = []
+
+    オプションリスト.forEach(同一オプション => {
+      let hit = false
+      if (Array.isArray(同一オプション)) {
+        同一オプション.forEach(e => {
+          if (hit) { // 1回hitしたら同一オプションは無視
+            return
+          }
+          if (e !== str && e.startsWith(str)) {
+            前半一致.push(e)
+            hit = true
+          }
+        })
+      } else {
+        if (同一オプション !== str && 同一オプション.startsWith(str)) {
+          前半一致.push(同一オプション)
         }
-      })
+      }
+    })
+    if (前半一致.length > 1) { // 曖昧
+      const value = [str].concat(前半一致)
+      option.曖昧 === undefined ? option.曖昧 = [value] : option.曖昧.push(value)
+      return オプションなら最長オプション名(オプションリスト, 前半一致[0]) // 先にマッチしたもの優先
     }
-    return prop_name
+    if (前半一致.length === 1) { // 曖昧ではない
+      const 完全一致 = オプションなら最長オプション名(オプションリスト, str)
+      if (完全一致) { // 完全一致の方で確定
+        return str
+      } else {
+        return オプションなら最長オプション名(オプションリスト, 前半一致[0])
+      }
+    }
   }
 
-  function ハイフン付きの名前に戻す(str) {
-    let temp = '-' + str.replace(/_/g, '-') // -または--付きの名前に戻す
-    if (temp.length > 2) {
-      temp = '-' + temp
-    }
-    return temp
-  }
-
-  function 引数なしオプションなの(str) {
+  function オプションなの(オプションリスト, str) {
     let hit = false
-    引数なし.forEach(e => {
+    オプションリスト.forEach(e => {
       if (Array.isArray(e)) {
         e.forEach(e => {
           if (e === str) {
@@ -324,22 +459,69 @@ function オプション(引数あり = [], 引数なし = [], 引数省略可 =
     return hit
   }
 
+  //++++++++++++++++++++++++++++++++++++++++++++++
+
+  function 最長オプション名(同一オプション) {
+    // -tと--full-timeなら--full-time
+    if (Array.isArray(同一オプション)) {
+      let name = ''
+      同一オプション.forEach(e => {
+        // 最も長いもの、同数なら先のもの優先
+        if (name.length < e.length) {
+          name = e
+        }
+      })
+      return name
+    } else {
+      return 同一オプション
+    }
+  }
+
   排他的オプション()
 
   function 排他的オプション() {
     排他的.forEach(e => {
-      let props = []
-      e.forEach(e => {
-        let prop_name = 最長プロパティ名(e)
-        if (option[prop_name] !== undefined) {
-          props.push(ハイフン付きの名前に戻す(prop_name))
+      const props = []
+      e.forEach(str => {
+        const name = オプションなら最長オプション名(全オプションリスト, str)
+        const prop = name.replace(/-/g, '_').replace(/^_+/, '')
+        if (option[prop] !== undefined) { // 使用済み
+          if (!props.includes(name)) { // 同じオプションの複数回使用は排他的扱いしない
+            props.push(name)
+          }
         }
       })
-      if (props.length > 1) {
+      if (props.length >= 2) { // 使用済みが複数
         option.排他的 === undefined ? option.排他的 = [props] : option.排他的.push(props)
       }
     })
   }
 
+  未指定オプション()
+
+  function 未指定オプション() {
+    option.未指定 = []
+    const list = オプション最長名リスト(引数あり, 引数なし, 引数省略可)
+    list.forEach(e => {
+      const プロパティ名 = e.replace(/-/g, '_').replace(/^_+/, '')
+      if (!option[プロパティ名]) {
+        option.未指定.push(e)
+      }
+    })
+
+    function オプション最長名リスト(...オプション定義) {
+      const arr = []
+      オプション定義.forEach(オプションリスト => {
+        オプションリスト.forEach(同一オプション => {
+          arr.push(最長オプション名(同一オプション))
+        })
+      })
+      return arr
+    }
+  }
+
   return option
 }
+
+
+//===============================================================================
