@@ -24,7 +24,7 @@ const 引数あり = [
   ['-T', '--title'],
   ['-L', '--headline'],
   //
-  ['--ruby'],
+  ['-r', '--ruby'],
 ]
 const 引数なし = [
   ['-d', '--debug'],
@@ -47,7 +47,7 @@ const 引数なし = [
   ['-C', '--comment'],
   ['-K', '--katakana'],
   ['-p', '--use-rp'],
-  ['--comma'],
+  ['--ruby-comma'],
 ]
 const 引数省略可 = [
   ['-a', '--add-class'],
@@ -60,7 +60,7 @@ const 排他的 = [
   // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
   ['--html', '--headline'],
   ['--html', '--ruby'],
-  ['--html', '--comma'],
+  ['--html', '--ruby-comma'],
   //
   ['--text', '--selector'],
   ['--text', '--not-selector'],
@@ -83,7 +83,7 @@ const 排他的 = [
   ['--add-class', '--headline'],
   ['--add-class', '--ruby-size'],
   ['--add-class', '--ruby'],
-  ['--add-class', '--comma'],
+  ['--add-class', '--ruby-comma'],
   //
   ['--md-html', '--brackets'],
   ['--md-html', '--grade'],
@@ -97,7 +97,7 @@ const 排他的 = [
   ['--md-html', '--only-body'],
   ['--md-html', '--ruby-size'],
   ['--md-html', '--ruby'],
-  ['--md-html', '--comma'],
+  ['--md-html', '--ruby-comma'],
   //
   ['--text-html', '--brackets'],
   ['--text-html', '--grade'],
@@ -111,7 +111,7 @@ const 排他的 = [
   ['--text-html', '--only-body'],
   ['--text-html', '--ruby-size'],
   ['--text-html', '--ruby'],
-  ['--text-html', '--comma'],
+  ['--text-html', '--ruby-comma'],
   // --only-body: --commentは出力ok
   ['--only-body', '--ruby-size'],
   ['--only-body', '--css'],
@@ -508,7 +508,7 @@ function headline検証() { // undefinedかstringに, 空文字ok
 
 function ruby検証() {
   let ruby_re, フレーズありre, split
-  if (オプション.comma) {
+  if (オプション.ruby_comma) {
     ruby_re = /^[^,]+,[^,]+(,[^,]+)?$/
     フレーズありre = /^[^,]+,[^,]+,[^,]+$/
     split = ','
@@ -522,13 +522,13 @@ function ruby検証() {
     オプション.ruby.forEach((e, i) => {
       // 検証
       if (!ruby_re.test(e)) {
-        終了(1, '--ruby \'フレーズ:漢字:ルビ\': 「フレーズ:」は省略可。,区切りなら--commaも: ' + e)
+        終了(1, '--ruby \'フレーズ:単語:ルビ\': 「フレーズ:」は省略可。,区切りなら--ruby-commaも: ' + e)
       }
       if (フレーズありre.test(e)) {
         const フレーズ = e.split(split)[0]
-        const 漢字 = e.split(split)[1]
-        if (!フレーズ.includes(漢字)) {
-          終了(1, '--ruby \'フレーズ' + split + '漢字' + split + 'ルビ\': 「フレーズ」に「漢字」を含むこと: ' + e)
+        const 単語 = e.split(split)[1]
+        if (!フレーズ.includes(単語)) {
+          終了(1, '--ruby \'フレーズ' + split + '単語' + split + 'ルビ\': 「フレーズ」に「単語」を含むこと: ' + e)
         }
       }
       オプション.ruby[i] = e.split(split) // 要素数3ならフレーズあり
@@ -536,7 +536,7 @@ function ruby検証() {
       // 変換し、後で戻すための正規表現
       const アリエンティー = 'チョーアリエンティー' + i + 'ナコトバッス'
       オプション.ruby_re[i] = []
-      オプション.ruby_re[i].push(new RegExp(オプション.ruby[i][0], 'g')) // フレーズか漢字
+      オプション.ruby_re[i].push(new RegExp(オプション.ruby[i][0], 'g')) // フレーズか単語
       オプション.ruby_re[i].push(new RegExp(アリエンティー, 'g'))
     })
   }
