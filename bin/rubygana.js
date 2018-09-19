@@ -23,6 +23,8 @@ const 引数あり = [
   ['-N', '--ng-elements'],
   ['-T', '--title'],
   ['-L', '--headline'],
+  //
+  ['-r', '--ruby'],
 ]
 const 引数なし = [
   ['-d', '--debug'],
@@ -45,6 +47,7 @@ const 引数なし = [
   ['-C', '--comment'],
   ['-K', '--katakana'],
   ['-p', '--use-rp'],
+  ['--ruby-comma'],
 ]
 const 引数省略可 = [
   ['-a', '--add-class'],
@@ -56,6 +59,8 @@ const 排他的 = [
   ['--html', '--text', '--add-class', '--md-html', '--text-html', '--sample-md', '--sample-text', '--sample-html'],
   // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
   ['--html', '--headline'],
+  ['--html', '--ruby'],
+  ['--html', '--ruby-comma'],
   //
   ['--text', '--selector'],
   ['--text', '--not-selector'],
@@ -77,6 +82,8 @@ const 排他的 = [
   ['--add-class', '--use-rp'],
   ['--add-class', '--headline'],
   ['--add-class', '--ruby-size'],
+  ['--add-class', '--ruby'],
+  ['--add-class', '--ruby-comma'],
   //
   ['--md-html', '--brackets'],
   ['--md-html', '--grade'],
@@ -89,6 +96,8 @@ const 排他的 = [
   ['--md-html', '--use-rp'],
   ['--md-html', '--only-body'],
   ['--md-html', '--ruby-size'],
+  ['--md-html', '--ruby'],
+  ['--md-html', '--ruby-comma'],
   //
   ['--text-html', '--brackets'],
   ['--text-html', '--grade'],
@@ -101,6 +110,8 @@ const 排他的 = [
   ['--text-html', '--use-rp'],
   ['--text-html', '--only-body'],
   ['--text-html', '--ruby-size'],
+  ['--text-html', '--ruby'],
+  ['--text-html', '--ruby-comma'],
   // --only-body: --commentは出力ok
   ['--only-body', '--ruby-size'],
   ['--only-body', '--css'],
@@ -380,6 +391,8 @@ function オプション整理検証() {
       ruby_size検証() // cssより先
       css検証()
       use_rp検証()
+    } else {
+      ruby検証()
     }
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
@@ -490,6 +503,42 @@ function headline検証() { // undefinedかstringに, 空文字ok
       終了(1, '--headlineオプションは1回だけ使える: ' + オプション.headline.join(', '))
     }
     オプション.headline = オプション.headline[0]
+  }
+}
+
+function ruby検証() {
+  let ruby_re, フレーズありre, split
+  if (オプション.ruby_comma) {
+    ruby_re = /^[^,]+,[^,]+(,[^,]+)?$/
+    フレーズありre = /^[^,]+,[^,]+,[^,]+$/
+    split = ','
+  } else {
+    ruby_re = /^[^:]+:[^:]+(:[^:]+)?$/
+    フレーズありre = /^[^:]+:[^:]+:[^:]+$/
+    split = ':'
+  }
+  if (オプション.ruby) {
+    オプション.ruby_re = []
+    オプション.ruby.forEach((e, i) => {
+      // 検証
+      if (!ruby_re.test(e)) {
+        終了(1, '--ruby \'フレーズ:単語:ルビ\': 「フレーズ:」は省略可。,区切りなら--ruby-commaも: ' + e)
+      }
+      if (フレーズありre.test(e)) {
+        const フレーズ = e.split(split)[0]
+        const 単語 = e.split(split)[1]
+        if (!フレーズ.includes(単語)) {
+          終了(1, '--ruby \'フレーズ' + split + '単語' + split + 'ルビ\': 「フレーズ」に「単語」を含むこと: ' + e)
+        }
+      }
+      オプション.ruby[i] = e.split(split) // 要素数3ならフレーズあり
+
+      // 変換し、後で戻すための正規表現
+      const アリエンティー = 'チョーアリエンティー' + i + 'ナコトバッス'
+      オプション.ruby_re[i] = []
+      オプション.ruby_re[i].push(new RegExp(オプション.ruby[i][0], 'g')) // フレーズか単語
+      オプション.ruby_re[i].push(new RegExp(アリエンティー, 'g'))
+    })
   }
 }
 
