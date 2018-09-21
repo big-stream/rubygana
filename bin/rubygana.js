@@ -59,6 +59,7 @@ const 排他的 = [
   ['--html', '--text', '--add-class', '--md-html', '--text-html', '--sample-md', '--sample-text', '--sample-html'],
   // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
   ['--html', '--headline'],
+  ['--html', '--brackets'],
   //
   ['--text', '--selector'],
   ['--text', '--not-selector'],
@@ -376,22 +377,26 @@ function コマンドグループの判定(入力) {
 //-------------------------------------------------------------------------------
 
 function オプション整理検証() {
-  if (オプション.グループ === '--html' || オプション.グループ === '--text') {
+  if (オプション.グループ === '--html') {
+    ruby要素調整()
+    grade検証()
+    granularity検証()
+    comment検証()
+    katakana検証()
+    ruby検証()
+    selector検証()
+    not_selector検証()
+    ng_elements検証()
+    title検証()
+    ruby_size検証() // cssより先
+    css検証()
+  } else if (オプション.グループ === '--text') {
     brackets検証()
     grade検証()
     granularity検証()
     comment検証()
     katakana検証()
     ruby検証()
-    if (オプション.グループ === '--html') {
-      selector検証()
-      not_selector検証()
-      ng_elements検証()
-      title検証()
-      ruby_size検証() // cssより先
-      css検証()
-      use_rp検証()
-    }
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
     selector検証()
@@ -626,19 +631,21 @@ function ruby_size検証() { // Number 1.0-2.0
 
 // その他
 
+function ruby要素調整() { // --htmlの場合
+  if (オプション.use_rp) {
+    オプション.左括弧 = '</rb><rp>(</rp><rt>'
+    オプション.右括弧 = '</rt><rp>)</rp></ruby>'
+  } else {
+    オプション.左括弧 = '</rb><rt>'
+    オプション.右括弧 = '</rt></ruby>'
+  }
+}
+
 function katakana検証() { // trueかfalse
   if (オプション.katakana) {
     オプション.katakana = true
   } else {
     オプション.katakana = false
-  }
-}
-
-function use_rp検証() { // trueかfalse
-  if (オプション.use_rp) {
-    オプション.use_rp = true
-  } else {
-    オプション.use_rp = false
   }
 }
 
