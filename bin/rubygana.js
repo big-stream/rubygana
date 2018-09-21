@@ -52,7 +52,7 @@ const 引数なし = [
 const 引数省略可 = [
   ['-a', '--add-class'],
   ['-c', '--css'],
-  ['-R', '--ruby-size'],
+  ['--ruby-size'],
 ]
 const 排他的 = [
   // コマンドグループ
