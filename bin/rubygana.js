@@ -46,7 +46,7 @@ const 引数なし = [
   ['-y', '--only-body'],
   ['-C', '--comment'],
   ['-K', '--katakana'],
-  ['-p', '--use-rp'],
+  ['--use-rp'],
   ['--ruby-comma'],
 ]
 const 引数省略可 = [
