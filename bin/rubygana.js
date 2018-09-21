@@ -670,9 +670,9 @@ function comment検証() { // undefinedかstringに
   const ヘルプ = require('../lib/help.js')
   const コメント = `この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
   if (オプション.グループ === '--html') {
-    オプション.comment = '\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
+    オプション.comment = '\n\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
   } else { // --text
-    オプション.comment = '\n# ' + コメント + '\n# ' + コマンド
+    オプション.comment = '\n\n# ' + コメント + '\n# ' + コマンド
   }
 }
 
