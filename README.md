@@ -103,10 +103,10 @@ MIT License
 ## オプション
 
 1. ### HTMLのルビ化: --html
-       rubygana [-HKCy] [-b 括弧] [-g 学年] [-G 粒度]
+       rubygana [-HKCy] [-g 学年] [-G 粒度]
                 [-s セレクタ] [-n 除外セレクタ] [-N 除外要素]
-                [--ruby [フレーズ:]単語:ルビ] [--ruby-comma]
-                [-c [CSS]] [-T タイトル] [--ruby-size [フォント倍率]] [ファイル]
+                [-c [CSS]] [-T タイトル] [--ruby-size [フォント倍率]]
+                [--ruby [フレーズ:]単語:ルビ] [--ruby-comma] [ファイル]
 
 2. ### テキスト文書のルビ化: --text
        rubygana [-tKC] [-b 括弧] [-g 学年] [-G 粒度] [--ruby-comma]
