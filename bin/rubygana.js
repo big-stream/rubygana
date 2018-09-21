@@ -203,6 +203,10 @@ function 終了(終了ステータス = 0, 表示 = '') {
   }
   if (オプション.debug) {
     console.log('終了時オプション(終了ステータス' + 終了ステータス + '):')
+    if (!オプション.verbose) {
+      delete オプション.ruby_re
+      delete オプション.未指定
+    }
     console.log(オプション)
   }
   process.exit(終了ステータス)
