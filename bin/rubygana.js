@@ -46,19 +46,20 @@ const 引数なし = [
   ['-y', '--only-body'],
   ['-C', '--comment'],
   ['-K', '--katakana'],
-  ['-p', '--use-rp'],
+  ['--use-rp'],
   ['--ruby-comma'],
 ]
 const 引数省略可 = [
   ['-a', '--add-class'],
   ['-c', '--css'],
-  ['-R', '--ruby-size'],
+  ['--ruby-size'],
 ]
 const 排他的 = [
   // コマンドグループ
   ['--html', '--text', '--add-class', '--md-html', '--text-html', '--sample-md', '--sample-text', '--sample-html'],
   // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
   ['--html', '--headline'],
+  ['--html', '--brackets'],
   //
   ['--text', '--selector'],
   ['--text', '--not-selector'],
@@ -202,6 +203,10 @@ function 終了(終了ステータス = 0, 表示 = '') {
   }
   if (オプション.debug) {
     console.log('終了時オプション(終了ステータス' + 終了ステータス + '):')
+    if (!オプション.verbose) {
+      delete オプション.ruby_re
+      delete オプション.未指定
+    }
     console.log(オプション)
   }
   process.exit(終了ステータス)
@@ -376,22 +381,26 @@ function コマンドグループの判定(入力) {
 //-------------------------------------------------------------------------------
 
 function オプション整理検証() {
-  if (オプション.グループ === '--html' || オプション.グループ === '--text') {
+  if (オプション.グループ === '--html') {
+    ruby要素調整()
+    grade検証()
+    granularity検証()
+    comment検証()
+    katakana検証()
+    ruby検証()
+    selector検証()
+    not_selector検証()
+    ng_elements検証()
+    title検証()
+    ruby_size検証() // cssより先
+    css検証()
+  } else if (オプション.グループ === '--text') {
     brackets検証()
     grade検証()
     granularity検証()
     comment検証()
     katakana検証()
     ruby検証()
-    if (オプション.グループ === '--html') {
-      selector検証()
-      not_selector検証()
-      ng_elements検証()
-      title検証()
-      ruby_size検証() // cssより先
-      css検証()
-      use_rp検証()
-    }
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
     selector検証()
@@ -626,6 +635,16 @@ function ruby_size検証() { // Number 1.0-2.0
 
 // その他
 
+function ruby要素調整() { // --htmlの場合
+  if (オプション.use_rp) {
+    オプション.左括弧 = '</rb><rp>(</rp><rt>'
+    オプション.右括弧 = '</rt><rp>)</rp></ruby>'
+  } else {
+    オプション.左括弧 = '</rb><rt>'
+    オプション.右括弧 = '</rt></ruby>'
+  }
+}
+
 function katakana検証() { // trueかfalse
   if (オプション.katakana) {
     オプション.katakana = true
@@ -634,34 +653,26 @@ function katakana検証() { // trueかfalse
   }
 }
 
-function use_rp検証() { // trueかfalse
-  if (オプション.use_rp) {
-    オプション.use_rp = true
-  } else {
-    オプション.use_rp = false
-  }
-}
-
 function comment検証() { // undefinedかstringに
-  if (オプション.comment) {
-    const ヘルプ = require('../lib/help.js')
-    const コメント1 = `<!-- この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
-    const コメント3 = '-->'
-    let temp = 'rubygana'
-      // 実際のコマンド引数を挿入
-    process.argv.slice(2).forEach((item) => {
-      if (item.startsWith('-')) {
-        temp += ' ' + item
-      } else {
-        temp += ' \'' + item + '\''
-      }
-    })
-    temp = `
-${コメント1}
-${temp}
-${コメント3}
-`
-    オプション.comment = temp
+  if (!オプション.comment) {
+    return
+  }
+  // 実際のコマンド引数を挿入
+  let コマンド = 'rubygana'
+  process.argv.slice(2).forEach((item) => {
+    if (item.startsWith('-')) {
+      コマンド += ' ' + item
+    } else {
+      コマンド += ' "' + item.replace(/"/g, '\\"') + '"'
+    }
+  })
+
+  const ヘルプ = require('../lib/help.js')
+  const コメント = `この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
+  if (オプション.グループ === '--html') {
+    オプション.comment = '\n\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
+  } else { // --text
+    オプション.comment = '\n\n# ' + コメント + '\n# ' + コマンド
   }
 }
 

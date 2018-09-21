@@ -16,7 +16,7 @@
 ルビ族以外もどうぞ!
 
 
-## 特徴(rubygana 0.3.2)
+## 特徴(rubygana 0.4.0)
 
 1. ##### HTMLのルビ化
    `<ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby>`
@@ -103,10 +103,10 @@ MIT License
 ## オプション
 
 1. ### HTMLのルビ化: --html
-       rubygana [-HKCpy] [-b 括弧] [-g 学年] [-G 粒度]
+       rubygana [-HKCy] [-g 学年] [-G 粒度]
                 [-s セレクタ] [-n 除外セレクタ] [-N 除外要素]
-         	[--ruby [フレーズ:]単語:ルビ] [--ruby-comma]
-                [-c [CSS]] [-T タイトル] [ファイル]
+                [-c [CSS]] [-T タイトル] [--ruby-size [フォント倍率]]
+                [--ruby [フレーズ:]単語:ルビ] [--ruby-comma] [ファイル]
 
 2. ### テキスト文書のルビ化: --text
        rubygana [-tKC] [-b 括弧] [-g 学年] [-G 粒度] [--ruby-comma]
@@ -373,16 +373,16 @@ head要素末尾にstyle要素追加。そのCSSを指定。引数省略で下�
 - `--text-html`と`--md-html`のとき、空(のstyle要素)
 
 
-#### `--ruby-size, -R [フォントサイズ]`
+#### `--ruby-size [フォント倍率]`
 head要素末尾に下記style要素追加。ルビのフォントサイズ(漢字に対する倍率): 0.1-2.0(デフォルト0.5)
    - `ruby>rp,ruby>rt{font-size:倍率em;}`
 
 
-#### `--use-rp, -p`
+#### `--use-rp`
 
 rp要素(ルビ非対応ブラウザのための括弧書き)を使用する。
 
-    echo 猫なの? | rubygana -H -p --only-body
+    echo 猫なの? | rubygana -H --use-rp --only-body
 
      # 出力
     <ruby><rb>猫</rb><rp>(</rp><rt>ねこ</rt><rp>)</rp></ruby>なの?
@@ -405,11 +405,19 @@ h1要素の内容。`--text-html`と`--md-html`で使う。
 
 #### `--comment, -C`
 
-`--html`か`--text`のとき、文書末尾に下記3行挿入。HTMLの場合はソースからなら確認できるコメント。
+rubyganaコマンド実行に関するコメントを末尾に追加。
 
-    <!-- この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。
-    (2行目に実際に実行したコマンドオプション・引数が入る)
-    -->
+`--html`のとき: body要素末尾に改行と下記4行挿入。スタイルが`display:none`のため、ソースからなら確認できるコメント。
+
+    <!-- この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。 -->
+    <pre style="display:none;"><code>
+    ここに実際に実行したコマンドオプション・引数が入る
+    </code></pre>
+
+`--text`のとき: 文書末尾に改行と下記2行追記。
+
+    # この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。
+    # ここに実際に実行したコマンドオプション・引数が入る
 
 
 #### `--debug, -d`
