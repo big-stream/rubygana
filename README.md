@@ -16,7 +16,7 @@
 ルビ族以外もどうぞ!
 
 
-## 特徴(rubygana 0.3.0)
+## 特徴(rubygana 0.3.1)
 
 1. ##### HTMLのルビ化
    `<ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby>`
