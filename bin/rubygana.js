@@ -59,8 +59,6 @@ const 排他的 = [
   ['--html', '--text', '--add-class', '--md-html', '--text-html', '--sample-md', '--sample-text', '--sample-html'],
   // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
   ['--html', '--headline'],
-  ['--html', '--ruby'],
-  ['--html', '--ruby-comma'],
   //
   ['--text', '--selector'],
   ['--text', '--not-selector'],
@@ -384,6 +382,7 @@ function オプション整理検証() {
     granularity検証()
     comment検証()
     katakana検証()
+    ruby検証()
     if (オプション.グループ === '--html') {
       selector検証()
       not_selector検証()
@@ -392,8 +391,6 @@ function オプション整理検証() {
       ruby_size検証() // cssより先
       css検証()
       use_rp検証()
-    } else {
-      ruby検証()
     }
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
