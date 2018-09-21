@@ -663,7 +663,7 @@ function comment検証() { // undefinedかstringに
     if (item.startsWith('-')) {
       コマンド += ' ' + item
     } else {
-      コマンド += ' \'' + item + '\''
+      コマンド += ' "' + item.replace(/"/g, '\\"') + '"'
     }
   })
 
@@ -672,7 +672,7 @@ function comment検証() { // undefinedかstringに
   if (オプション.グループ === '--html') {
     オプション.comment = '\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
   } else { // --text
-    オプション.comment = '\n# ' + コメント + '\n# ' + コマンド 
+    オプション.comment = '\n# ' + コメント + '\n# ' + コマンド
   }
 }
 
