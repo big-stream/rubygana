@@ -654,25 +654,25 @@ function katakana検証() { // trueかfalse
 }
 
 function comment検証() { // undefinedかstringに
-  if (オプション.comment) {
-    const ヘルプ = require('../lib/help.js')
-    const コメント1 = `<!-- この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
-    const コメント3 = '-->'
-    let temp = 'rubygana'
-      // 実際のコマンド引数を挿入
-    process.argv.slice(2).forEach((item) => {
-      if (item.startsWith('-')) {
-        temp += ' ' + item
-      } else {
-        temp += ' \'' + item + '\''
-      }
-    })
-    temp = `
-${コメント1}
-${temp}
-${コメント3}
-`
-    オプション.comment = temp
+  if (!オプション.comment) {
+    return
+  }
+  // 実際のコマンド引数を挿入
+  let コマンド = 'rubygana'
+  process.argv.slice(2).forEach((item) => {
+    if (item.startsWith('-')) {
+      コマンド += ' ' + item
+    } else {
+      コマンド += ' \'' + item + '\''
+    }
+  })
+
+  const ヘルプ = require('../lib/help.js')
+  const コメント = `この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
+  if (オプション.グループ === '--html') {
+    オプション.comment = '\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
+  } else { // --text
+    オプション.comment = '\n# ' + コメント + '\n# ' + コマンド 
   }
 }
 
