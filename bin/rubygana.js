@@ -25,6 +25,7 @@ const 引数あり = [
   ['-L', '--headline'],
   //
   ['-r', '--ruby'],
+  ['--ruby-comma'],
 ]
 const 引数なし = [
   ['-d', '--debug'],
@@ -47,7 +48,6 @@ const 引数なし = [
   ['-C', '--comment'],
   ['-K', '--katakana'],
   ['--use-rp'],
-  ['--ruby-comma'],
 ]
 const 引数省略可 = [
   ['-a', '--add-class'],
@@ -388,6 +388,7 @@ function オプション整理検証() {
     comment検証()
     katakana検証()
     ruby検証()
+    ruby_comma検証()
     selector検証()
     not_selector検証()
     ng_elements検証()
@@ -401,6 +402,7 @@ function オプション整理検証() {
     comment検証()
     katakana検証()
     ruby検証()
+    ruby_comma検証()
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
     selector検証()
@@ -514,55 +516,68 @@ function headline検証() { // undefinedかstringに, 空文字ok
 }
 
 function ruby検証() {
-  let ruby_re, 区切り
+  if (オプション.ruby) {
+    アリエンティスト追加(オプション.ruby, '--ruby')
+  }
+}
+
+function ruby_comma検証() {
   if (オプション.ruby_comma) {
-    ruby_re = /^[^,]+,[^,]+(,[^,]+)?$/
-    区切り = ','
-  } else {
+    アリエンティスト追加(オプション.ruby_comma, '--ruby-comma')
+  }
+}
+
+// --ruby, --ruby-comma
+function アリエンティスト追加(arr, opt_name) {
+  let ruby_re, 区切り
+  if (opt_name === '--ruby') {
     ruby_re = /^[^:]+:[^:]+(:[^:]+)?$/
     区切り = ':'
+  } else {
+    ruby_re = /^[^,]+,[^,]+(,[^,]+)?$/
+    区切り = ','
   }
-  if (オプション.ruby) {
+  if (!オプション.アリエンティスト) {
     オプション.アリエンティスト = []
-    オプション.ruby.forEach((e, i) => {
-      if (!ruby_re.test(e)) {
-        終了(1, '--ruby \'フレーズ:単語:ルビ\': 「フレーズ:」は省略可。,区切りなら--ruby-commaも: ' + e)
-      }
-      //
-      let temp, フレーズ, 単語, ルビ, フレーズか単語re, アリエンティーナ, フレーズにアリエンティーナ, アリエンティーナre
-      const ruby_arr = e.split(区切り)
-      if (ruby_arr.length === 3) { // フレーズあり
-        フレーズ = ruby_arr[0]
-        単語 = ruby_arr[1]
-        ルビ = ruby_arr[2]
-        if (!フレーズ.includes(単語)) {
-          終了(1, '--ruby \'フレーズ' + 区切り + '単語' + 区切り + 'ルビ\': 「フレーズ」に「単語」を含むこと: ' + e)
-        }
-        temp = '[' + フレーズ.split('').join('][') + ']'
-      } else {
-        単語 = ruby_arr[0]
-        ルビ = ruby_arr[1]
-        temp = '[' + 単語.split('').join('][') + ']'
-      }
-      temp = temp.replace(/\[\\]/g, '[\\\\]').replace(/\[]]/g, '[\\]]')
-      フレーズか単語re = new RegExp(temp, 'g')
-      アリエンティーナ = 区切り + 'チョーアリエンティー' + i + 'ナコトバッス'
-      アリエンティーナre = new RegExp(アリエンティーナ, 'g')
-      if (ruby_arr.length === 3) { // フレーズあり
-        フレーズにアリエンティーナ = フレーズ.replace(単語, アリエンティーナ) // 単語複数でも一つ目だけ
-      }
-      オプション.アリエンティスト[i] = {
-        フレーズ: フレーズ,
-        単語: 単語,
-        ルビ: ルビ,
-        区切り: 区切り,
-        フレーズか単語re: フレーズか単語re,
-        アリエンティーナ: アリエンティーナ,
-        フレーズにアリエンティーナ: フレーズにアリエンティーナ,
-        アリエンティーナre: アリエンティーナre,
-      }
-    })
   }
+  arr.forEach(e => {
+    if (!ruby_re.test(e)) {
+      終了(1, opt_name + ' \'フレーズ' + 区切り + '単語' + 区切り + 'ルビ\': 「フレーズ' + 区切り + '」は省略可: ' + e)
+    }
+    //
+    let temp, フレーズ, 単語, ルビ, フレーズか単語re, アリエンティーナ, フレーズにアリエンティーナ, アリエンティーナre
+    const ruby_arr = e.split(区切り)
+    if (ruby_arr.length === 3) { // フレーズあり
+      フレーズ = ruby_arr[0]
+      単語 = ruby_arr[1]
+      ルビ = ruby_arr[2]
+      if (!フレーズ.includes(単語)) {
+        終了(1, opt_name + ' \'フレーズ' + 区切り + '単語' + 区切り + 'ルビ\': 「フレーズ」に「単語」を含むこと: ' + e)
+      }
+      temp = '[' + フレーズ.split('').join('][') + ']'
+    } else {
+      単語 = ruby_arr[0]
+      ルビ = ruby_arr[1]
+      temp = '[' + 単語.split('').join('][') + ']'
+    }
+    temp = temp.replace(/\[\\]/g, '[\\\\]').replace(/\[]]/g, '[\\]]')
+    フレーズか単語re = new RegExp(temp, 'g')
+    アリエンティーナ = 区切り + 'チョーアリエンティー' + オプション.アリエンティスト.length + 'ナコトバッス'
+    アリエンティーナre = new RegExp(アリエンティーナ, 'g')
+    if (ruby_arr.length === 3) { // フレーズあり
+      フレーズにアリエンティーナ = フレーズ.replace(単語, アリエンティーナ) // 単語複数でも一つ目だけ
+    }
+    オプション.アリエンティスト.push({
+      フレーズ: フレーズ,
+      単語: 単語,
+      ルビ: ルビ,
+      区切り: 区切り,
+      フレーズか単語re: フレーズか単語re,
+      アリエンティーナ: アリエンティーナ,
+      フレーズにアリエンティーナ: フレーズにアリエンティーナ,
+      アリエンティーナre: アリエンティーナre,
+    })
+  })
 }
 
 
