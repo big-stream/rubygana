@@ -26,6 +26,7 @@ const 引数あり = [
   //
   ['-r', '--ruby'],
   ['--ruby-comma'],
+  ['--ruby-re'],
 ]
 const 引数なし = [
   ['-d', '--debug'],
@@ -83,6 +84,7 @@ const 排他的 = [
   ['--add-class', '--ruby-size'],
   ['--add-class', '--ruby'],
   ['--add-class', '--ruby-comma'],
+  ['--add-class', '--ruby-re'],
   //
   ['--md-html', '--brackets'],
   ['--md-html', '--grade'],
@@ -97,6 +99,7 @@ const 排他的 = [
   ['--md-html', '--ruby-size'],
   ['--md-html', '--ruby'],
   ['--md-html', '--ruby-comma'],
+  ['--md-html', '--ruby-re'],
   //
   ['--text-html', '--brackets'],
   ['--text-html', '--grade'],
@@ -111,6 +114,7 @@ const 排他的 = [
   ['--text-html', '--ruby-size'],
   ['--text-html', '--ruby'],
   ['--text-html', '--ruby-comma'],
+  ['--text-html', '--ruby-re'],
   // --only-body: --commentは出力ok
   ['--only-body', '--ruby-size'],
   ['--only-body', '--css'],
@@ -389,6 +393,7 @@ function オプション整理検証() {
     katakana検証()
     ruby検証()
     ruby_comma検証()
+    ruby_re検証()
     selector検証()
     not_selector検証()
     ng_elements検証()
@@ -403,6 +408,7 @@ function オプション整理検証() {
     katakana検証()
     ruby検証()
     ruby_comma検証()
+    ruby_re検証()
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
     selector検証()
@@ -524,6 +530,12 @@ function ruby検証() {
 function ruby_comma検証() {
   if (オプション.ruby_comma) {
     アリエンティスト追加(オプション.ruby_comma, '--ruby-comma')
+  }
+}
+
+function ruby_re検証() {
+  if (オプション.ruby_re) {
+    アリエンティスト追加(オプション.ruby_re, '--ruby-re')
   }
 }
 
