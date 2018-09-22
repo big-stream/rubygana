@@ -204,7 +204,7 @@ function 終了(終了ステータス = 0, 表示 = '') {
   if (オプション.debug) {
     console.log('終了時オプション(終了ステータス' + 終了ステータス + '):')
     if (!オプション.verbose) {
-      delete オプション.ruby_re
+      delete オプション.アリエンティスト
       delete オプション.未指定
     }
     console.log(オプション)
@@ -514,37 +514,53 @@ function headline検証() { // undefinedかstringに, 空文字ok
 }
 
 function ruby検証() {
-  let ruby_re, フレーズありre, split
+  let ruby_re, 区切り
   if (オプション.ruby_comma) {
     ruby_re = /^[^,]+,[^,]+(,[^,]+)?$/
-    フレーズありre = /^[^,]+,[^,]+,[^,]+$/
-    split = ','
+    区切り = ','
   } else {
     ruby_re = /^[^:]+:[^:]+(:[^:]+)?$/
-    フレーズありre = /^[^:]+:[^:]+:[^:]+$/
-    split = ':'
+    区切り = ':'
   }
   if (オプション.ruby) {
-    オプション.ruby_re = []
+    オプション.アリエンティスト = []
     オプション.ruby.forEach((e, i) => {
-      // 検証
       if (!ruby_re.test(e)) {
         終了(1, '--ruby \'フレーズ:単語:ルビ\': 「フレーズ:」は省略可。,区切りなら--ruby-commaも: ' + e)
       }
-      if (フレーズありre.test(e)) {
-        const フレーズ = e.split(split)[0]
-        const 単語 = e.split(split)[1]
+      //
+      let temp, フレーズ, 単語, ルビ, フレーズか単語re, アリエンティーナ, フレーズにアリエンティーナ, アリエンティーナre
+      const ruby_arr = e.split(区切り)
+      if (ruby_arr.length === 3) { // フレーズあり
+        フレーズ = ruby_arr[0]
+        単語 = ruby_arr[1]
+        ルビ = ruby_arr[2]
         if (!フレーズ.includes(単語)) {
-          終了(1, '--ruby \'フレーズ' + split + '単語' + split + 'ルビ\': 「フレーズ」に「単語」を含むこと: ' + e)
+          終了(1, '--ruby \'フレーズ' + 区切り + '単語' + 区切り + 'ルビ\': 「フレーズ」に「単語」を含むこと: ' + e)
         }
+        temp = '[' + フレーズ.split('').join('][') + ']'
+      } else {
+        単語 = ruby_arr[0]
+        ルビ = ruby_arr[1]
+        temp = '[' + 単語.split('').join('][') + ']'
       }
-      オプション.ruby[i] = e.split(split) // 要素数3ならフレーズあり
-
-      // 変換し、後で戻すための正規表現
-      const アリエンティー = 'チョーアリエンティー' + i + 'ナコトバッス'
-      オプション.ruby_re[i] = []
-      オプション.ruby_re[i].push(new RegExp(オプション.ruby[i][0], 'g')) // フレーズか単語
-      オプション.ruby_re[i].push(new RegExp(アリエンティー, 'g'))
+      temp = temp.replace(/\[\\]/g, '[\\\\]').replace(/\[]]/g, '[\\]]')
+      フレーズか単語re = new RegExp(temp, 'g')
+      アリエンティーナ = 区切り + 'チョーアリエンティー' + i + 'ナコトバッス'
+      アリエンティーナre = new RegExp(アリエンティーナ, 'g')
+      if (ruby_arr.length === 3) { // フレーズあり
+        フレーズにアリエンティーナ = フレーズ.replace(単語, アリエンティーナ) // 単語複数でも一つ目だけ
+      }
+      オプション.アリエンティスト[i] = {
+        フレーズ: フレーズ,
+        単語: 単語,
+        ルビ: ルビ,
+        区切り: 区切り,
+        フレーズか単語re: フレーズか単語re,
+        アリエンティーナ: アリエンティーナ,
+        フレーズにアリエンティーナ: フレーズにアリエンティーナ,
+        アリエンティーナre: アリエンティーナre,
+      }
     })
   }
 }
