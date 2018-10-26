@@ -27,7 +27,13 @@ ruby=(
 --ruby '文科省:もんかしょう'
 --ruby '空:から'
 )
-check=$( rubygana --md-html README.md | rubygana --html --css "$css" "${ruby[@]}" --comment | tee README.md.rubygana.html | md5sum )
+check=$(
+rubygana --md-html README.md | \
+  rubygana --html --css "$css" "${ruby[@]}" --comment | \
+  rubygana --add-class --switch | \
+  tee README.md.rubygana.html | \
+  md5sum
+)
 sed -i "s/^md5=.*/md5='$check'/" scripts/minitest.sh
 
 echo "バージョン書き換え完了:"
