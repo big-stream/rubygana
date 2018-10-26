@@ -4,7 +4,7 @@ cd ${script%/*/*} # リポジトリ
 
 echo "miniテスト開始:"
 
-md5='d41d8cd98f00b204e9800998ecf8427e  -'
+md5='7c8ca5e74ac5d9afbccf6ef2ce3f88be  -'
 css='code{background-color:#cccccc;}'
 ruby=(
 --ruby '不味い:ん?! マジぃ'
@@ -17,7 +17,13 @@ ruby=(
 --ruby '文科省:もんかしょう'
 --ruby '空:から'
 )
-check=$( rubygana --md-html README.md | rubygana --html --css "$css" "${ruby[@]}" --comment | tee README.md.rubygana.html | md5sum )
+check=$(
+rubygana --md-html README.md | \
+  rubygana --html --css "$css" "${ruby[@]}" --comment | \
+  rubygana --add-class --switch | \
+  tee README.md.rubygana.html | \
+  md5sum
+)
 [[ $md5 = $check ]] || { echo "$check"; exit 1; }
 
 echo "miniテスト完了:"
