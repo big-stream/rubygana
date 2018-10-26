@@ -48,6 +48,7 @@ const 引数なし = [
   ['-y', '--only-body'],
   ['-C', '--comment'],
   ['-K', '--katakana'],
+  ['--switch'],
   ['--use-rp'],
 ]
 const 引数省略可 = [
@@ -61,6 +62,7 @@ const 排他的 = [
   // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
   ['--html', '--headline'],
   ['--html', '--brackets'],
+  ['--html', '--switch'],
   //
   ['--text', '--selector'],
   ['--text', '--not-selector'],
@@ -71,6 +73,7 @@ const 排他的 = [
   ['--text', '--headline'],
   ['--text', '--only-body'],
   ['--text', '--ruby-size'],
+  ['--text', '--switch'],
   //
   ['--add-class', '--brackets'],
   ['--add-class', '--grade'],
@@ -100,6 +103,7 @@ const 排他的 = [
   ['--md-html', '--ruby'],
   ['--md-html', '--ruby-comma'],
   ['--md-html', '--ruby-re'],
+  ['--md-html', '--switch'],
   //
   ['--text-html', '--brackets'],
   ['--text-html', '--grade'],
@@ -115,6 +119,7 @@ const 排他的 = [
   ['--text-html', '--ruby'],
   ['--text-html', '--ruby-comma'],
   ['--text-html', '--ruby-re'],
+  ['--text-html', '--switch'],
   // --only-body: --commentは出力ok
   ['--only-body', '--ruby-size'],
   ['--only-body', '--css'],
