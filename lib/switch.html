@@ -1,0 +1,50 @@
+
+<nav id="rubygana学年選択" title="学習学年でルビをオンオフ">
+  <label><input type="checkbox" value="学年0" checked />ルビ全部</label>
+  <label><input type="checkbox" value="学年1" checked />1</label>
+  <label><input type="checkbox" value="学年2" checked />2</label>
+  <label><input type="checkbox" value="学年3" checked />3</label>
+  <label><input type="checkbox" value="学年4" checked />4</label>
+  <label><input type="checkbox" value="学年5" checked />5</label>
+  <label><input type="checkbox" value="学年6" checked />6</label>
+  <label><input type="checkbox" value="学年7" checked />中学以降</label>
+  <label><input type="checkbox" value="学年8" checked />常用漢字以外</label>
+</nav>
+<hr>
+
+<script>
+// Nodelist.forEach()
+document.querySelectorAll('nav#rubygana学年選択 input').forEach(function(e, i){
+  e.addEventListener('change',function() {
+    表示切り替え(i, e.checked);
+  },false);
+});
+function 表示切り替え(i, checked){
+  if(i === 0){ // 全部の表示・非表示
+    document.querySelectorAll('nav#rubygana学年選択 input').forEach(function(e, i){
+      e.checked = checked;
+    });
+    表示切り替え();
+    return;
+  }
+  // 複数学年の熟語があるので、off学年だけいったん非表示
+  document.querySelectorAll('nav#rubygana学年選択 input').forEach(function(e, i){
+    if(e.checked || i === 0) {
+      return;
+    }
+    document.querySelectorAll('ruby.学年' + i + '>rt').forEach(function(e){
+      e.classList.add('rt非表示');
+    });
+  });
+  // on学年が一つでもあれば表示
+  document.querySelectorAll('nav#rubygana学年選択 input').forEach(function(e, i){
+    if(!e.checked || i === 0) {
+      return;
+    }
+    document.querySelectorAll('ruby.学年' + i + '>rt').forEach(function(e){
+      e.classList.remove('rt非表示');
+    });
+  });
+};
+</script>
+
