@@ -4,7 +4,7 @@ cd ${script%/*/*} # リポジトリ
 
 echo "miniテスト開始:"
 
-md5='7c8ca5e74ac5d9afbccf6ef2ce3f88be  -'
+md5='52375c056960a27e87a403f25544f6f6  -'
 css='code{background-color:#cccccc;}'
 ruby=(
 --ruby '不味い:ん?! マジぃ'
