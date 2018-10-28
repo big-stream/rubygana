@@ -16,7 +16,7 @@
 ルビ族以外もどうぞ!
 
 
-## 特徴(rubygana 0.6.2)
+## 特徴(rubygana 0.7.0)
 
 1. ##### HTMLのルビ化
    `<ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby>`
@@ -132,6 +132,8 @@ MIT License
     -M, --sample-md     サンプルマークダウン出力
     -d, --debug         デバッグ用  
     -h, --help          ヘルプ  
+    --readme-md		詳細ヘルプ(このマークダウン)  
+    --readme-html	詳細ヘルプ(HTML)  
     -v, --verbose       デバッグ情報を増やす  
     -V, --version       バージョン情報  
     -い, --依存          依存ライブラリ確認  
