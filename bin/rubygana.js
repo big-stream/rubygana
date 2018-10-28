@@ -785,35 +785,29 @@ function comment検証() { // undefinedかstringに
 //-------------------------------------------------------------------------------
 
 function コマンド分岐(入力) {
-  let 末尾 = ''
-  if (オプション.末尾改行) {
-    末尾 = '\n'
-  }
   if (オプション.グループ === '--text-html') {
     require('../lib/text-html.js')(入力, オプション, (HTML) => {
-      process.stdout.write(HTML + 末尾)
+      process.stdout.write(HTML)
       終了()
     })
   } else if (オプション.グループ === '--md-html') {
     require('../lib/md-html.js')(入力, オプション, (HTML) => {
-      process.stdout.write(HTML + 末尾)
+      process.stdout.write(HTML)
       終了()
     })
-  } else if (!入力.trim()) {
-    終了()
   } else if (オプション.グループ === '--html') {
     require('../lib/html.js')(入力, オプション, (ルビ付き) => {
-      process.stdout.write(ルビ付き + 末尾)
+      process.stdout.write(ルビ付き)
       終了()
     })
   } else if (オプション.グループ === '--text') {
     require('../lib/text.js')(入力, オプション, (ルビ付き) => {
-      process.stdout.write(ルビ付き + 末尾)
+      process.stdout.write(ルビ付き)
       終了()
     })
   } else if (オプション.グループ === '--add-class') {
     require('../lib/add-class.js')(入力, オプション, (クラス付き) => {
-      process.stdout.write(クラス付き + 末尾)
+      process.stdout.write(クラス付き)
       終了()
     })
   } else if (オプション.グループ === '--readme-html') {
