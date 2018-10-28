@@ -44,6 +44,8 @@ const 引数なし = [
   ['-A', '--sample-text'],
   ['-B', '--sample-html'],
   ['-M', '--sample-md'],
+  ['--readme-md'],
+  ['--readme-html'],
   //
   ['-y', '--only-body'],
   ['-C', '--comment'],
@@ -124,7 +126,7 @@ const 排他的 = [
   ['--only-body', '--ruby-size'],
   ['--only-body', '--css'],
   ['--only-body', '--title'],
-  // --sample-md, --sample-text, --sample-html, --helpなどは、他のオプションをあっても無視
+  // --sample-md, --sample-text, --sample-html, --readme-, --helpなどは、他のオプションをあっても無視
 ]
 
 
@@ -279,13 +281,19 @@ function オプションと標準入力の総合検証(標準入力) {
   if (オプション.sample_md) {
     sample_mdオプション()
   }
+  if (オプション.readme_md) {
+    readme_mdオプション()
+  }
 
   let 入力
   if (オプション.標準入力) {
     入力 = 標準入力
   } else if (オプション.オペランド) {
     入力 = ファイル読込(オプション.オペランド[0])
+  } else if (オプション.readme_html) {
+    入力 = ファイル読込(__dirname + '/../README.md')
   }
+
   //
   コマンドグループの判定(入力)
   オプション整理検証()
@@ -363,6 +371,11 @@ function sample_htmlオプション() {
   終了(0, sample)
 }
 
+function readme_mdオプション() {
+  const readme = ファイル読込(__dirname + '/../README.md')
+  終了(0, readme)
+}
+
 
 //-------------------------------------------------------------------------------
 
@@ -378,6 +391,8 @@ function コマンドグループの判定(入力) {
     オプション.グループ = '--text-html'
   } else if (オプション.md_html) {
     オプション.グループ = '--md-html'
+  } else if (オプション.readme_html) {
+    オプション.グループ = '--readme-html'
   } else if (入力 && たぶんhtml.test(入力.trim())) { // 自動判別: タグの有無で判断
     オプション.グループ = '--html'
   } else {
@@ -777,17 +792,14 @@ function コマンド分岐(入力) {
       process.stdout.write(HTML + 末尾)
       終了()
     })
-  }
-  if (オプション.グループ === '--md-html') {
-    require('../lib/md-html.js')(入力, オプション, (マークダウン) => {
-      process.stdout.write(マークダウン + 末尾)
+  } else if (オプション.グループ === '--md-html') {
+    require('../lib/md-html.js')(入力, オプション, (HTML) => {
+      process.stdout.write(HTML + 末尾)
       終了()
     })
-  }
-  if (!入力.trim()) {
+  } else if (!入力.trim()) {
     終了()
-  }
-  if (オプション.グループ === '--html') {
+  } else if (オプション.グループ === '--html') {
     require('../lib/html.js')(入力, オプション, (ルビ付き) => {
       process.stdout.write(ルビ付き + 末尾)
       終了()
@@ -802,7 +814,62 @@ function コマンド分岐(入力) {
       process.stdout.write(クラス付き + 末尾)
       終了()
     })
+  } else if (オプション.グループ === '--readme-html') {
+    readme_html(入力)
+    return
   }
+}
+
+function readme_html(入力) {
+  let オプション保存 = {}
+  for (const prop in オプション) {
+    オプション保存[prop] = オプション[prop]
+  }
+
+  function オプション初期化() {
+    for (const prop in オプション) {
+      delete オプション[prop]
+    }
+    for (const prop in オプション保存) {
+      オプション[prop] = オプション保存[prop]
+    }
+  }
+  オプション.グループ = '--md-html'
+  オプション.md_html = [true]
+  オプション整理検証()
+  require('../lib/md-html.js')(入力, オプション, (HTML) => {
+    オプション初期化()
+    オプション.グループ = '--html'
+    オプション.html = [true]
+    オプション.ruby = [
+      '不味い:ん?! マジぃ',
+      '空行:くうぎょう',
+      '冒頭行:行:ぎょう',
+      '粒度:りゅうど',
+      '文科省:もんかしょう',
+      '空:から',
+    ]
+    オプション.ruby_re = [
+      '[0-9一二三四五]行:行:ぎょう',
+      '行(ごと|毎):行:ぎょう',
+      '行[をはが]:行:ぎょう',
+    ]
+    オプション.comment = [true]
+    オプション整理検証()
+    require('../lib/html.js')(HTML, オプション, (ルビ付き) => {
+      オプション初期化()
+      オプション.グループ = '--add-class'
+      オプション.add_class = [true]
+      オプション.switch = [true]
+      オプション.css = ['code{background-color:#cccccc;}']
+      オプション整理検証()
+      require('../lib/add-class.js')(ルビ付き, オプション, (クラス付き) => {
+        process.stdout.write(クラス付き + '\n')
+        オプション初期化()
+        終了()
+      })
+    })
+  })
 }
 
 //===============================================================================
