@@ -186,7 +186,7 @@ const オプション = オプションと標準入力.オプション解析(引
     オプション.標準入力 = true
   }
   const 入力 = オプションと標準入力の総合検証(標準入力)
-  if (!入力) {
+  if (入力 === undefined) { // 空文字は終了せず
     終了()
   }
   if (オプション.debug && オプション.debug.length > 1) { // -ddでkuromoji実行しない
@@ -207,7 +207,9 @@ function コールバック(data) {
 //-------------------------------------------------------------------------------
 
 function 終了(終了ステータス = 0, 表示 = '') {
-  if (終了ステータス !== 0) {
+  if (終了ステータス === 99) {
+    console.error('エラー: ' + 表示)
+  } else if (終了ステータス !== 0) {
     console.error('エラー: ' + 表示, '\nコマンドヘルプ: --help')
   } else if (表示 !== '') {
     console.log(表示)
@@ -292,23 +294,22 @@ function オプションと標準入力の総合検証(標準入力) {
     入力 = ファイル読込(オプション.オペランド[0])
   } else if (オプション.readme_html) {
     入力 = ファイル読込(__dirname + '/../README.md')
+  } else if (オプション.標準入力 === null) {
+    入力 = ''
   }
 
   //
   コマンドグループの判定(入力)
   オプション整理検証()
-  if (!入力) {
-    return
-  }
 
   // 末尾改行一つあれば、最後に追加
-  if (/\n$/.test(入力)) {
+  if (入力 && /\n$/.test(入力)) {
     オプション.末尾改行 = true
   } else {
     オプション.末尾改行 = false
   }
 
-  return 入力.trim() // 前後空白削除
+  return 入力
 }
 
 function ファイル読込(ファイル) {
@@ -783,35 +784,29 @@ function comment検証() { // undefinedかstringに
 //-------------------------------------------------------------------------------
 
 function コマンド分岐(入力) {
-  let 末尾 = ''
-  if (オプション.末尾改行) {
-    末尾 = '\n'
-  }
   if (オプション.グループ === '--text-html') {
     require('../lib/text-html.js')(入力, オプション, (HTML) => {
-      process.stdout.write(HTML + 末尾)
+      process.stdout.write(HTML)
       終了()
     })
   } else if (オプション.グループ === '--md-html') {
     require('../lib/md-html.js')(入力, オプション, (HTML) => {
-      process.stdout.write(HTML + 末尾)
+      process.stdout.write(HTML)
       終了()
     })
-  } else if (!入力.trim()) {
-    終了()
   } else if (オプション.グループ === '--html') {
     require('../lib/html.js')(入力, オプション, (ルビ付き) => {
-      process.stdout.write(ルビ付き + 末尾)
+      process.stdout.write(ルビ付き)
       終了()
     })
   } else if (オプション.グループ === '--text') {
     require('../lib/text.js')(入力, オプション, (ルビ付き) => {
-      process.stdout.write(ルビ付き + 末尾)
+      process.stdout.write(ルビ付き)
       終了()
     })
   } else if (オプション.グループ === '--add-class') {
     require('../lib/add-class.js')(入力, オプション, (クラス付き) => {
-      process.stdout.write(クラス付き + 末尾)
+      process.stdout.write(クラス付き)
       終了()
     })
   } else if (オプション.グループ === '--readme-html') {
@@ -864,7 +859,7 @@ function readme_html(入力) {
       オプション.css = ['code{background-color:#cccccc;}']
       オプション整理検証()
       require('../lib/add-class.js')(ルビ付き, オプション, (クラス付き) => {
-        process.stdout.write(クラス付き + '\n')
+        process.stdout.write(クラス付き)
         オプション初期化()
         終了()
       })
