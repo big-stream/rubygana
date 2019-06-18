@@ -1,6 +1,6 @@
 {
   "name": "rubygana",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "漢字にルビ(ふりがな)を付けちゃうぞ。",
   "main": "lib/index.js",
   "bin": {
@@ -24,7 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "kuromoji": "^0.1.2",
-    "cheerio": "^1.0.0-rc.2",
-    "marked": "^0.5.0"
+    "cheerio": "^1.0.0-rc.3",
+    "marked": "^0.6.2"
   }
 }
