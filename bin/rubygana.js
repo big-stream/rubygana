@@ -856,7 +856,7 @@ function readme_html(入力) {
       オプション.グループ = '--add-class'
       オプション.add_class = [true]
       オプション.switch = [true]
-      オプション.css = ['code{background-color:#cccccc;}']
+      オプション.css = ['body {font-size: 1.8em;} code{background-color:#cccccc;}']
       オプション整理検証()
       require('../lib/add-class.js')(ルビ付き, オプション, (クラス付き) => {
         process.stdout.write(クラス付き)
