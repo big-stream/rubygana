@@ -23,9 +23,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "imay-cli-nodejs": "github:big-stream/imay-cli-nodejs#semver:~1.0.1",
     "kuromoji": "^0.1.2",
-    "cheerio": "^1.0.0-rc.3",
-    "marked": "^0.6.2"
+    "marked": "^1.1.0"
   }
 }
