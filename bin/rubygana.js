@@ -9,208 +9,25 @@
 
 'use strict'
 
-//===============================================================================
-//-------------------------------------------------------------------------------
-
-// コマンドオプションの定義と解析
-
-const 引数あり = [
-  ['-b', '--brackets'],
-  ['-g', '--grade'],
-  ['-G', '--granularity'],
-  ['-s', '--selector'],
-  ['-n', '--not-selector'],
-  ['-N', '--ng-elements'],
-  ['-T', '--title'],
-  ['-L', '--headline'],
-  //
-  ['-r', '--ruby'],
-  ['--ruby-comma'],
-  ['--ruby-re'],
-]
-const 引数なし = [
-  ['-d', '--debug'],
-  ['-h', '--help'],
-  ['-v', '--verbose'],
-  ['-V', '--version'],
-  ['-ら', '--ライセンス'],
-  ['-い', '--依存'],
-  ['-☺', '--感謝'],
-  // コマンドグループ 
-  ['-H', '--html'],
-  ['-t', '--text'],
-  ['-m', '--md-html'],
-  ['-w', '--text-html'],
-  ['-A', '--sample-text'],
-  ['-B', '--sample-html'],
-  ['-M', '--sample-md'],
-  ['--readme-md'],
-  ['--readme-html'],
-  //
-  ['-y', '--only-body'],
-  ['-C', '--comment'],
-  ['-K', '--katakana'],
-  ['--switch'],
-  ['--use-rp'],
-]
-const 引数省略可 = [
-  ['-a', '--add-class'],
-  ['-c', '--css'],
-  ['--ruby-size'],
-]
-const 排他的 = [
-  // コマンドグループ
-  ['--html', '--text', '--add-class', '--md-html', '--text-html', '--sample-md', '--sample-text', '--sample-html'],
-  // --htmlや--textを省略して自動判別にした場合、不要なオプションは無視
-  ['--html', '--headline'],
-  ['--html', '--brackets'],
-  ['--html', '--switch'],
-  //
-  ['--text', '--selector'],
-  ['--text', '--not-selector'],
-  ['--text', '--ng-elements'],
-  ['--text', '--css'],
-  ['--text', '--title'],
-  ['--text', '--use-rp'],
-  ['--text', '--headline'],
-  ['--text', '--only-body'],
-  ['--text', '--ruby-size'],
-  ['--text', '--switch'],
-  //
-  ['--add-class', '--brackets'],
-  ['--add-class', '--grade'],
-  ['--add-class', '--granularity'],
-  ['--add-class', '--ng-elements'],
-  ['--add-class', '--title'],
-  ['--add-class', '--comment'],
-  ['--add-class', '--katakana'],
-  ['--add-class', '--use-rp'],
-  ['--add-class', '--headline'],
-  ['--add-class', '--ruby-size'],
-  ['--add-class', '--ruby'],
-  ['--add-class', '--ruby-comma'],
-  ['--add-class', '--ruby-re'],
-  //
-  ['--md-html', '--brackets'],
-  ['--md-html', '--grade'],
-  ['--md-html', '--granularity'],
-  ['--md-html', '--selector'],
-  ['--md-html', '--not-selector'],
-  ['--md-html', '--ng-elements'],
-  ['--md-html', '--comment'],
-  ['--md-html', '--katakana'],
-  ['--md-html', '--use-rp'],
-  ['--md-html', '--only-body'],
-  ['--md-html', '--ruby-size'],
-  ['--md-html', '--ruby'],
-  ['--md-html', '--ruby-comma'],
-  ['--md-html', '--ruby-re'],
-  ['--md-html', '--switch'],
-  //
-  ['--text-html', '--brackets'],
-  ['--text-html', '--grade'],
-  ['--text-html', '--granularity'],
-  ['--text-html', '--selector'],
-  ['--text-html', '--not-selector'],
-  ['--text-html', '--ng-elements'],
-  ['--text-html', '--comment'],
-  ['--text-html', '--katakana'],
-  ['--text-html', '--use-rp'],
-  ['--text-html', '--only-body'],
-  ['--text-html', '--ruby-size'],
-  ['--text-html', '--ruby'],
-  ['--text-html', '--ruby-comma'],
-  ['--text-html', '--ruby-re'],
-  ['--text-html', '--switch'],
-  // --only-body: --commentは出力ok
-  ['--only-body', '--ruby-size'],
-  ['--only-body', '--css'],
-  ['--only-body', '--title'],
-  // --sample-md, --sample-text, --sample-html, --readme-, --helpなどは、他のオプションをあっても無視
-]
-
-
-/* 例:
-検証前オプション:
-{ html: [ true ],
-  'オペランド': [ 'README.md' ],
-  debug: [ true, true ],
-  '標準入力': false }
-検証後オプション:
-{ html: [ true ],
-  'オペランド': [ 'README.md' ],
-  debug: [ true, true ],
-  '標準入力': false,
-  'グループ': '--html',
-  '左括弧': '(',
-  '右括弧': ')',
-  '未指定':
-   [ '--brackets',
-     '--grade',
-     '--granularity',
-     '--comment',
-     '--katakana',
-     '--selector',
-     '--not-selector',
-     '--ng-elements',
-     '--title',
-     '--ruby-size',
-     '--css',
-     '--use_rp' ],
-  grade: 0,
-  granularity: 0,
-  katakana: false,
-  selector: 'body',
-  not_selector: 'ruby,script,style,code,pre,samp,blockquote',
-  ng_elements: 'ruby|script|style|code|pre|samp|blockquote',
-  css: null,
-  use_rp: false,
-  '末尾改行': true }
-*/
-
-
-//===============================================================================
-//-------------------------------------------------------------------------------
-
 // オプションと標準入力の総合検証、コマンド分岐
+const {標準入力, オプション解析} = require('imay-cli-nodejs')
+const オプション = オプション解析(require('../lib/options'))
 
-const オプションと標準入力 = require('./オプションと標準入力.js')
-const オプション = オプションと標準入力.オプション解析(引数あり, 引数なし, 引数省略可, 排他的)
-
-オプションと標準入力.標準入力(コールバック).then((標準入力) => {
-  if (標準入力 === undefined) { // 標準入力なし
-    オプション.標準入力 = false
-  } else if (標準入力 === '') { // 空文字 例: echo -n
-    オプション.標準入力 = null
-  } else { // 標準入力あり
-    オプション.標準入力 = true
-  }
-  const 入力 = オプションと標準入力の総合検証(標準入力)
-  if (入力 === undefined) { // 空文字は終了せず
-    終了()
-  }
-  if (オプション.debug && オプション.debug.length > 1) { // -ddでkuromoji実行しない
-    終了()
-  }
+標準入力(コールバック).then(標準入力 => {
+  オプション.標準入力 = 標準入力.status
+  const 入力 = オプションと標準入力の総合検証(標準入力.data)
+  if (入力 === undefined) 終了() // 空文字は終了せず
+  if (オプション.debug && オプション.debug.length > 1) 終了() // -ddでkuromoji実行しない
   コマンド分岐(入力)
-}).catch((e) => {
-  終了(99, e)
-})
+}).catch(e => 終了(99, e))
 
 function コールバック(data) {
-  if (オプション.debug && (オプション.verbose && オプション.verbose.length > 2)) {
-    process.stdout.write('標準入力: ' + data)
-  }
+  if (オプション.debug && (オプション.verbose && オプション.verbose.length > 2)) process.stdout.write(`標準入力: ${data}`)
 }
 
-
-//-------------------------------------------------------------------------------
-
 function 終了(終了ステータス = 0, 表示 = '') {
-  if (終了ステータス === 99) {
-    console.error('エラー: ' + 表示)
-  } else if (終了ステータス !== 0) {
-    console.error('エラー: ' + 表示, '\nコマンドヘルプ: --help')
+  if (終了ステータス !== 0) {
+    console.error(`エラー: ${表示}\nコマンドヘルプ: --help`)
   } else if (表示 !== '') {
     console.log(表示)
   }
@@ -225,71 +42,34 @@ function 終了(終了ステータス = 0, 表示 = '') {
   process.exit(終了ステータス)
 }
 
-
-//===============================================================================
-//-------------------------------------------------------------------------------
-
-function オプションと標準入力の総合検証(標準入力) {
+function オプションと標準入力の総合検証(stdin) {
   if (オプション.debug) {
     console.log('検証前オプション:')
     console.log(オプション)
   }
   // 不正オプション
-  if (オプション.不明) {
-    終了(1, '不明なオプション: ' + オプション.不明)
-  }
-  if (オプション.曖昧) {
-    終了(1, '曖昧なオプション: ' + オプション.曖昧[0]) // とりあえず1グループだけ
-  }
-  if (オプション.引数必須) {
-    終了(1, '引数必須のオプション: ' + オプション.引数必須)
-  }
-  if (オプション.排他的) {
-    終了(1, '互いに排他的なオプション: ' + オプション.排他的[0]) // とりあえず1グループだけ
-  }
+  if (オプション.不明) 終了(1, `不明なオプション: ${オプション.不明}`)
+  if (オプション.曖昧) 終了(1, `曖昧なオプション: ${オプション.曖昧[0]}`) // とりあえず1グループだけ
+  if (オプション.引数必須) 終了(1, `引数必須のオプション: ${オプション.引数必須}`)
+  if (オプション.排他的) 終了(1, `互いに排他的なオプション: ${オプション.排他的[0]}`) // とりあえず1グループだけ
 
-  // 標準入力かオペランド(ファイル)かどちらかのみ
-  if (オプション.オペランド && オプション.標準入力) {
-    終了(1, '標準入力とファイル指定はどちらかのみ: ' + オプション.オペランド)
-  }
-
-  // オペランド(ファイル)あるなら一つだけ
-  if (オプション.オペランド && オプション.オペランド.length > 1) {
-    終了(1, 'ファイル指定が複数ある: ' + オプション.オペランド)
-  }
+  if (オプション.オペランド && オプション.標準入力) 終了(1, `標準入力とファイル指定はどちらかのみ: ${オプション.オペランド}`)
+  if (オプション.オペランド && オプション.オペランド.length > 1) 終了(1, `ファイル指定が複数ある: ${オプション.オペランド}`)
 
   // 単独オプションで終了
-  if (オプション.help) {
-    helpオプション()
-  }
-  if (オプション.version) {
-    versionオプション()
-  }
-  if (オプション.依存) {
-    依存オプション()
-  }
-  if (オプション.ライセンス) {
-    ライセンスオプション()
-  }
-  if (オプション.感謝) {
-    感謝オプション()
-  }
-  if (オプション.sample_html) {
-    sample_htmlオプション()
-  }
-  if (オプション.sample_text) {
-    sample_textオプション()
-  }
-  if (オプション.sample_md) {
-    sample_mdオプション()
-  }
-  if (オプション.readme_md) {
-    readme_mdオプション()
-  }
+  if (オプション.help) helpオプション()
+  if (オプション.version) versionオプション()
+  if (オプション.依存) 依存オプション()
+  if (オプション.ライセンス) ライセンスオプション()
+  if (オプション.感謝) 終了(0, 'どういたしまして☺')
+  if (オプション.sample_html) sample_htmlオプション()
+  if (オプション.sample_text) sample_textオプション()
+  if (オプション.sample_md) sample_mdオプション()
+  if (オプション.readme_md) readme_mdオプション()
 
   let 入力
   if (オプション.標準入力) {
-    入力 = 標準入力
+    入力 = stdin
   } else if (オプション.オペランド) {
     入力 = ファイル読込(オプション.オペランド[0])
   } else if (オプション.readme_html) {
@@ -298,16 +78,12 @@ function オプションと標準入力の総合検証(標準入力) {
     入力 = ''
   }
 
-  //
   コマンドグループの判定(入力)
   オプション整理検証()
 
   // 末尾改行一つあれば、最後に追加
-  if (入力 && /\n$/.test(入力)) {
-    オプション.末尾改行 = true
-  } else {
-    オプション.末尾改行 = false
-  }
+  オプション.末尾改行 = false
+  if (入力 && /\n$/.test(入力)) オプション.末尾改行 = true
 
   return 入力
 }
@@ -317,11 +93,7 @@ function ファイル読込(ファイル) {
   try {
     return fs.readFileSync(ファイル, 'utf8')
   } catch (e) {
-    if (/^-.*$/.test(ファイル)) {
-      終了(2, 'ファイルを開けない: オプション名の間違い?: ' + ファイル)
-    } else {
-      終了(2, 'ファイルを開けない: ' + ファイル)
-    }
+    終了(2, `ファイルを開けない: ${ファイル}`)
   }
 }
 
@@ -351,10 +123,6 @@ function ライセンスオプション() {
   const msg = `MIT License
 ©  2018 ころん:すとりーむ`
   終了(0, msg)
-}
-
-function 感謝オプション() {
-  終了(0, 'どういたしまして☺')
 }
 
 function sample_mdオプション() {
@@ -403,37 +171,21 @@ function コマンドグループの判定(入力) {
 
 
 //===============================================================================
-//-------------------------------------------------------------------------------
 
 function オプション整理検証() {
   if (オプション.グループ === '--html') {
     ruby要素調整()
-    grade検証()
-    granularity検証()
-    comment検証()
-    katakana検証()
-    ruby検証()
-    ruby_comma検証()
-    ruby_re検証()
-    selector検証()
-    not_selector検証()
-    ng_elements検証()
+    grade検証(); granularity検証(); comment検証(); katakana検証(); ruby検証(); ruby_comma検証(); ruby_re検証()
+    selector検証(); not_selector検証(); ng_elements検証()
     title検証()
     ruby_size検証() // cssより先
     css検証()
   } else if (オプション.グループ === '--text') {
     brackets検証()
-    grade検証()
-    granularity検証()
-    comment検証()
-    katakana検証()
-    ruby検証()
-    ruby_comma検証()
-    ruby_re検証()
+    grade検証(); granularity検証(); comment検証(); katakana検証(); ruby検証(); ruby_comma検証(); ruby_re検証()
   } else if (オプション.グループ === '--add-class') {
     add_class検証()
-    selector検証()
-    not_selector検証()
+    selector検証(); not_selector検証()
     css検証()
   } else if (オプション.グループ === '--text-html' || オプション.グループ === '--md-html') {
     title検証()
@@ -449,9 +201,7 @@ function オプション整理検証() {
 
 function brackets検証() { // stringに、空文字ok
   if (オプション.brackets) {
-    if (オプション.brackets.length > 1) {
-      終了(1, '--bracketsオプションは1回だけ使える: ' + オプション.brackets.join(', '))
-    }
+    if (オプション.brackets.length > 1) 終了(1, '--bracketsオプションは1回だけ使える: ' + オプション.brackets.join(', '))
     // 奇数なら左括弧多めに配分
     オプション.左括弧 = オプション.brackets[0].slice(0, Math.ceil((オプション.brackets[0].length / 2)))
     オプション.右括弧 = オプション.brackets[0].slice(Math.ceil((オプション.brackets[0].length / 2)))
@@ -463,13 +213,9 @@ function brackets検証() { // stringに、空文字ok
 
 function grade検証() { // 0-7に
   if (オプション.grade) {
-    if (オプション.grade.length > 1) {
-      終了(1, '--gradeオプションは1回だけ使える: ' + オプション.grade.join(', '))
-    }
+    if (オプション.grade.length > 1) 終了(1, '--gradeオプションは1回だけ使える: ' + オプション.grade.join(', '))
     オプション.grade = オプション.grade[0]
-    if (!/^[0-7]$/.test(オプション.grade)) {
-      終了(1, '--gradeオプションは0-7の数: ' + オプション.grade)
-    }
+    if (!/^[0-7]$/.test(オプション.grade)) 終了(1, '--gradeオプションは0-7の数: ' + オプション.grade)
     オプション.grade = Number(オプション.grade)
   } else {
     オプション.grade = 0
@@ -478,13 +224,9 @@ function grade検証() { // 0-7に
 
 function granularity検証() { // 0-2に
   if (オプション.granularity) {
-    if (オプション.granularity.length > 1) {
-      終了(1, '--granularityオプションは1回だけ使える: ' + オプション.granularity.join(', '))
-    }
+    if (オプション.granularity.length > 1) 終了(1, '--granularityオプションは1回だけ使える: ' + オプション.granularity.join(', '))
     オプション.granularity = オプション.granularity[0]
-    if (!/^[0-2]$/.test(オプション.granularity)) {
-      終了(1, '--granularityオプションは0-2の数: ' + オプション.granularity)
-    }
+    if (!/^[0-2]$/.test(オプション.granularity)) 終了(1, '--granularityオプションは0-2の数: ' + オプション.granularity)
     オプション.granularity = Number(オプション.granularity)
   } else {
     オプション.granularity = 0
@@ -504,12 +246,10 @@ function selector検証() { // 配列複数なら,区切りのstringに, 空文�
 function not_selector検証() { // 配列複数なら,区切りのstringに, 空文字ok
   if (オプション.not_selector) {
     オプション.not_selector = オプション.not_selector.join(', ')
-  } else {
-    if (オプション.グループ === '--add-class') {
-      オプション.not_selector = ''
-    } else { // --html
-      オプション.not_selector = 'ruby,script,style,code,pre,samp,blockquote'
-    }
+  } else if (オプション.グループ === '--add-class') {
+    オプション.not_selector = ''
+  } else { // --html
+    オプション.not_selector = 'ruby,script,style,code,pre,samp,blockquote'
   }
 }
 
@@ -526,32 +266,24 @@ function ng_elements検証() { // 配列複数なら|区切りのstringに, 空�
 
 function title検証() { // undefinedかstringに, 空文字ok
   if (オプション.title) {
-    if (オプション.title.length > 1) {
-      終了(1, '--titleオプションは1回だけ使える: ' + オプション.title.join(', '))
-    }
+    if (オプション.title.length > 1) 終了(1, '--titleオプションは1回だけ使える: ' + オプション.title.join(', '))
     オプション.title = オプション.title[0]
   }
 }
 
 function headline検証() { // undefinedかstringに, 空文字ok
   if (オプション.headline) {
-    if (オプション.headline.length > 1) {
-      終了(1, '--headlineオプションは1回だけ使える: ' + オプション.headline.join(', '))
-    }
+    if (オプション.headline.length > 1) 終了(1, '--headlineオプションは1回だけ使える: ' + オプション.headline.join(', '))
     オプション.headline = オプション.headline[0]
   }
 }
 
 function ruby検証() {
-  if (オプション.ruby) {
-    rubyとruby_comma検証(オプション.ruby, '--ruby')
-  }
+  if (オプション.ruby) rubyとruby_comma検証(オプション.ruby, '--ruby')
 }
 
 function ruby_comma検証() {
-  if (オプション.ruby_comma) {
-    rubyとruby_comma検証(オプション.ruby_comma, '--ruby-comma')
-  }
+  if (オプション.ruby_comma) rubyとruby_comma検証(オプション.ruby_comma, '--ruby-comma')
 }
 
 function rubyとruby_comma検証(arr, タイプ) {
@@ -567,7 +299,7 @@ function rubyとruby_comma検証(arr, タイプ) {
     if (!opt_re.test(e)) {
       終了(1, タイプ + ' \'フレーズ' + 区切り + '単語' + 区切り + 'ルビ\': 「フレーズ' + 区切り + '」は省略可: ' + e)
     }
-    //
+    // マッチ部分を何それアリエナイなフレーズに置換、あとで戻す
     let temp, フレーズ, 単語, ルビ, フレーズか単語re, アリエンティーナ, フレーズにアリエンティーナ
     const ruby_arr = e.split(区切り)
     if (ruby_arr.length === 3) { // フレーズあり
@@ -598,25 +330,19 @@ function rubyとruby_comma検証(arr, タイプ) {
 }
 
 function ruby_re検証() {
-  if (!オプション.ruby_re) {
-    return
-  }
+  if (!オプション.ruby_re) return
   let タイプ = '--ruby-re'
   let opt_re = /^[^:]+:[^:]+:[^:]+$/
   let 区切り = ':'
   オプション.ruby_re.forEach(e => {
-    if (!opt_re.test(e)) {
-      終了(1, タイプ + ' \'正規表現' + 区切り + '単語' + 区切り + 'ルビ\': ' + e)
-    }
+    if (!opt_re.test(e)) 終了(1, タイプ + ' \'正規表現' + 区切り + '単語' + 区切り + 'ルビ\': ' + e)
     // フレーズ=正規表現
     let フレーズ, 単語, ルビ, フレーズか単語re, アリエンティーナ, フレーズにアリエンティーナ
     const ruby_arr = e.split(区切り)
     フレーズ = ruby_arr[0]
     単語 = ruby_arr[1]
     ルビ = ruby_arr[2]
-    if (!フレーズ.includes(単語)) {
-      終了(1, タイプ + ' \'正規表現' + 区切り + '単語' + 区切り + 'ルビ\': 「正規表現」に「単語」を含むこと: ' + e)
-    }
+    if (!フレーズ.includes(単語)) 終了(1, タイプ + ' \'正規表現' + 区切り + '単語' + 区切り + 'ルビ\': 「正規表現」に「単語」を含むこと: ' + e)
     try {
       フレーズか単語re = new RegExp(フレーズ, 'g')
     } catch (err) {
@@ -646,9 +372,7 @@ function アリエンティスト追加(タイプ, フレーズ, 単語, ルビ,
 }
 
 function アリエンティスト番号() {
-  if (!オプション.アリエンティスト) {
-    オプション.アリエンティスト = []
-  }
+  if (!オプション.アリエンティスト) オプション.アリエンティスト = []
   return オプション.アリエンティスト.length
 }
 
@@ -659,9 +383,7 @@ function アリエンティスト番号() {
 
 function css検証() { // nullかstringに、空文字ok
   if (オプション.css) {
-    if (オプション.css.length > 1) {
-      終了(1, '--cssオプションは1回だけ使える: ' + オプション.css.join(', '))
-    }
+    if (オプション.css.length > 1) 終了(1, '--cssオプションは1回だけ使える: ' + オプション.css.join(', '))
     if (オプション.css[0] === true) { // 引数省略: デフォルトstyleに
       if (オプション.グループ === '--add-class') {
         オプション.css = 'ruby[class$="8"]>rt{color:DarkRed;}'
@@ -681,25 +403,19 @@ function css検証() { // nullかstringに、空文字ok
     }
   } else { // style要素の追加なし、ただし--ruby-size
     オプション.css = null
-    if (オプション.ruby_size) {
-      オプション.css = 'ruby>rp,ruby>rt{font-size:' + オプション.ruby_size + 'em;}'
-    }
+    if (オプション.ruby_size) オプション.css = 'ruby>rp,ruby>rt{font-size:' + オプション.ruby_size + 'em;}'
   }
 }
 
 function add_class検証() { // stringに
   // この時点でオプション.add_classは配列確定
-  if (オプション.add_class.length > 1) {
-    終了(1, '--add-classオプションは1回だけ使える: ' + オプション.add_class.join(', '))
-  }
+  if (オプション.add_class.length > 1) 終了(1, '--add-classオプションは1回だけ使える: ' + オプション.add_class.join(', '))
   if (オプション.add_class[0] === true) { // 引数省略の場合
     オプション.add_class = '学年'
   } else {
     オプション.add_class = オプション.add_class[0]
     let result = classtest(オプション.add_class)
-    if (typeof result === 'string') {
-      終了(1, '--add-classオプションは' + result + オプション.add_class)
-    }
+    if (typeof result === 'string') 終了(1, '--add-classオプションは' + result + オプション.add_class)
   }
 
   function classtest(arg) { // クラス名の頭語
@@ -719,9 +435,7 @@ function add_class検証() { // stringに
 
 function ruby_size検証() { // Number 1.0-2.0
   if (オプション.ruby_size) {
-    if (オプション.ruby_size.length > 1) {
-      終了(1, '--ruby-sizeオプションは1回だけ使える: ' + オプション.ruby_size.join(', '))
-    }
+    if (オプション.ruby_size.length > 1) 終了(1, '--ruby-sizeオプションは1回だけ使える: ' + オプション.ruby_size.join(', '))
     if (オプション.ruby_size[0] === true) { // 引数省略: デフォルト0.5
       オプション.ruby_size = 0.5
     } else {
@@ -757,9 +471,7 @@ function katakana検証() { // trueかfalse
 }
 
 function comment検証() { // undefinedかstringに
-  if (!オプション.comment) {
-    return
-  }
+  if (!オプション.comment) return
   // 実際のコマンド引数を挿入
   let コマンド = 'rubygana'
   process.argv.slice(2).forEach((item) => {
@@ -772,8 +484,8 @@ function comment検証() { // undefinedかstringに
 
   const ヘルプ = require('../lib/help.js')
   const コメント = `この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
-  if (オプション.グループ === '--html') {
-    オプション.comment = '\n\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
+  if (オプション.グループ === '--html') { // コメント中の--不可
+    オプション.comment = `\n<!-- ${コメント} -->\n<pre style="display:none;"><code>\n${コマンド}\n</code></pre>\n`
   } else { // --text
     オプション.comment = '\n\n# ' + コメント + '\n# ' + コマンド
   }
@@ -781,33 +493,27 @@ function comment検証() { // undefinedかstringに
 
 
 //===============================================================================
-//-------------------------------------------------------------------------------
 
 function コマンド分岐(入力) {
   if (オプション.グループ === '--text-html') {
     require('../lib/text-html.js')(入力, オプション, (HTML) => {
       process.stdout.write(HTML)
-      終了()
     })
   } else if (オプション.グループ === '--md-html') {
     require('../lib/md-html.js')(入力, オプション, (HTML) => {
       process.stdout.write(HTML)
-      終了()
     })
   } else if (オプション.グループ === '--html') {
     require('../lib/html.js')(入力, オプション, (ルビ付き) => {
       process.stdout.write(ルビ付き)
-      終了()
     })
   } else if (オプション.グループ === '--text') {
     require('../lib/text.js')(入力, オプション, (ルビ付き) => {
       process.stdout.write(ルビ付き)
-      終了()
     })
   } else if (オプション.グループ === '--add-class') {
     require('../lib/add-class.js')(入力, オプション, (クラス付き) => {
       process.stdout.write(クラス付き)
-      終了()
     })
   } else if (オプション.グループ === '--readme-html') {
     readme_html(入力)
@@ -861,10 +567,7 @@ function readme_html(入力) {
       require('../lib/add-class.js')(ルビ付き, オプション, (クラス付き) => {
         process.stdout.write(クラス付き)
         オプション初期化()
-        終了()
       })
     })
   })
 }
-
-//===============================================================================

@@ -16,7 +16,7 @@
 ルビ族以外もどうぞ!
 
 
-## 特徴(rubygana 0.7.3)
+## 特徴(rubygana 0.8.1)
 
 1. ##### HTMLのルビ化
    `<ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby>`
@@ -58,15 +58,17 @@
 
 なんとかして`git`と`npm`コマンドの環境を入れたあと、こうする。
 
-    # 任意のディレクトリで、ダウンロード
-    git clone https://github.com/big-stream/rubygana.git
+```
+# 任意のディレクトリで、ダウンロード
+git clone https://github.com/big-stream/rubygana.git
 
-    # インストール(依存ライブラリのダウンロード)
-    cd rubygana/
-    npm install --global
+# インストール(依存ライブラリのダウンロード)
+cd rubygana/
+npm install --global
 
-    # もうrubyganaコマンドが使えるぞ
-    rubygana --help
+# もうrubyganaコマンドが使えるぞ
+rubygana --help
+```
 
 
 #### 依存ライブラリに感謝
@@ -86,14 +88,18 @@ MIT License
 
 ## 使用法
 
-    rubygana [オプション...] [ファイル]
+```
+rubygana [オプション...] [ファイル]
+```
 
 一つのファイル指定か標準入力が必要で、結果はすべて標準出力。
 
-    echo '猫と蝙蝠' | rubygana
+```
+echo '猫と蝙蝠' | rubygana
 
-    # 出力
-    猫(ねこ)と蝙蝠(こうもり)
+# 出力
+猫(ねこ)と蝙蝠(こうもり)
+```
 
 ルビ化の際、kuromoji.jsのビルドに1、2秒かかります。
 
@@ -150,23 +156,26 @@ MIT License
 
 HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別のため、省略可。  
 
-    # DOCTYPEやxml宣言がないのにHTML扱いしたい場合
-    echo '蝙蝠なの?' | rubygana -H --only-body
+```
+# DOCTYPEやxml宣言がないのにHTML扱いしたい場合
+echo '蝙蝠なの?' | rubygana -H --only-body
 
-    # 出力
-    <ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby>なの?
+# 出力
+<ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby>なの?
+```
 
 
 #### `--text, -t`
 
 テキスト扱いしてルビ化。
 
-    # DOCTYPEやxml宣言あるのにテキスト扱いしたい場合
-    echo '<!DOCTYPE html><html><body>蝙蝠なの?</body></html>' | rubygana -t
+```
+# DOCTYPEやxml宣言あるのにテキスト扱いしたい場合
+echo '<!DOCTYPE html><html><body>蝙蝠なの?</body></html>' | rubygana -t
 
-    # 出力
-    <!DOCTYPE html><html><body>蝙蝠(こうもり)なの?</body></html>
-
+# 出力
+<!DOCTYPE html><html><body>蝙蝠(こうもり)なの?</body></html>
+```
 
 
 #### `--add-class, -a ['クラス頭語']`
@@ -174,13 +183,15 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 漢字の学習学年をruby要素のクラス名に付加。すでにruby要素があるHTMLに対してこの動作だけを行い、新たなルビ化はしない。学年別に色分けしたいとか。  
 デフォルト: `学年`
 
-    # 「落」は3年生、「下」は1年生なので
-    echo '落下' | rubygana -H | rubygana -a --only-body
+```
+# 「落」は3年生、「下」は1年生なので
+echo '落下' | rubygana -H | rubygana -a --only-body
 
-    # 出力
-    <ruby class="学年3 学年1"><rb>落下</rb><rt>らっか</rt></ruby>
+# 出力
+<ruby class="学年3 学年1"><rb>落下</rb><rt>らっか</rt></ruby>
 
-    # 中学生以降は「学年7」、常用漢字以外の漢字は「学年8」
+# 中学生以降は「学年7」、常用漢字以外の漢字は「学年8」
+```
 
 
 #### `--md-html, -m`
@@ -199,9 +210,11 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 
 練習用サンプルとして、ルビのない下記3行テキストを標準出力。
 
-    不思議の国のアリス
-    「猫が蝙蝠を食べるの? 蝙蝠が猫を食うの?」
-    アリスは白ウサギの穴に落下しながら呟いた。すると突然…
+```
+不思議の国のアリス
+「猫が蝙蝠を食べるの? 蝙蝠が猫を食うの?」
+アリスは白ウサギの穴に落下しながら呟いた。すると突然…
+```
 
 
 #### `--sample-html, -B`
@@ -223,35 +236,39 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 
 ルビを指定したいなら。フレーズ(改行なし)で、フレーズ内の単語のみに作用。複数回使用可。マッチした単語には`--grade`など自動ルビ用オプションの影響なし。フレーズに:が含まれるなら代わりに`--ruby-comma`を使用。
 
-    # 自動のルビが不味いときや、工夫したいときに使う。
-    echo '反復横飛びの無限反復' | rubygana -r '無限反復:反復:ループ'
+```
+# 自動のルビが不味いときや、工夫したいときに使う。
+echo '反復横飛びの無限反復' | rubygana -r '無限反復:反復:ループ'
 
-    # 出力
-    反復(はんぷく)横(よこ)飛(と)びの無限(むげん)反復(ループ)
-
-
-    # --rubyはいくつも使用できるが、同じフレーズ・単語は先のものが優先
-    echo 猫と蝙蝠 | rubygana -r '猫:cat' -r '猫:きゃっと' -r '蝙蝠:bat'
-
-    # 出力
-    猫(cat)と蝙蝠(bat)
+# 出力
+反復(はんぷく)横(よこ)飛(と)びの無限(むげん)反復(ループ)
 
 
-    # --htmlでも
-    echo '猫の一撃をくらった' | rubygana --html -r '猫の一撃:ネコパーンチ' --only-body
+# --rubyはいくつも使用できるが、同じフレーズ・単語は先のものが優先
+echo 猫と蝙蝠 | rubygana -r '猫:cat' -r '猫:きゃっと' -r '蝙蝠:bat'
 
-    # 出力
-    <ruby><rb>猫の一撃</rb><rt>ネコパーンチ</rt></ruby>をくらった
+# 出力
+猫(cat)と蝙蝠(bat)
+
+
+# --htmlでも
+echo '猫の一撃をくらった' | rubygana --html -r '猫の一撃:ネコパーンチ' --only-body
+
+# 出力
+<ruby><rb>猫の一撃</rb><rt>ネコパーンチ</rt></ruby>をくらった
+```
 
 
 #### `--ruby-comma '[フレーズ,]単語,ルビ'`
 
 `--ruby`の代わりに使う。違う点は引数が,区切り。
 
-    echo 'ねえ、:コマンドって知ってる?' | rubygana --ruby-comma ':,コロン'
+```
+echo 'ねえ、:コマンドって知ってる?' | rubygana --ruby-comma ':,コロン'
 
-    # 出力
-    ねえ、:(コロン)コマンドって知(し)ってる?
+# 出力
+ねえ、:(コロン)コマンドって知(し)ってる?
+```
 
 
 #### `--ruby-re '正規表現:単語:ルビ'`
@@ -259,24 +276,26 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 正規表現(改行なし、:を使わないこと)を用いたルビ指定。マッチした表現中の単語のみに作用。複数回使用可。マッチした単語には`--grade`など自動ルビ用オプションの影響なし。正規表現はJavaScriptのRegExpで評価。
 
 
-    echo '1行2行、一行は四行も空行にした' | rubygana --ruby-re '[0-9四]行:行:ぎょう' --ruby '空行:くうぎょう'
+```
+echo '1行2行、一行は四行も空行にした' | rubygana --ruby-re '[0-9四]行:行:ぎょう' --ruby '空行:くうぎょう'
 
-    # 出力
-    1行(ぎょう)2行(ぎょう)、一行(いっこう)は四(よん)行(ぎょう)も空行(くうぎょう)にした
-
-
-    # マッチした表現に単語が複数回現れる場合、一つ目にのみルビが付く
-    echo '激怒激怒' | rubygana --ruby-re '(激怒)+:激怒:プンプン'
-
-    # 出力
-    激怒(プンプン)激怒(げきど)
+# 出力
+1行(ぎょう)2行(ぎょう)、一行(いっこう)は四(よん)行(ぎょう)も空行(くうぎょう)にした
 
 
-    # 先読み表現なども使える
-    echo '激怒プンプン丸が激怒' | rubygana --ruby-re '激怒(?=プンプン丸):激怒:げきおこ'
+# マッチした表現に単語が複数回現れる場合、一つ目にのみルビが付く
+echo '激怒激怒' | rubygana --ruby-re '(激怒)+:激怒:プンプン'
 
-    # 出力
-    激怒(げきおこ)プンプン丸(まる)が激怒(げきど)
+# 出力
+激怒(プンプン)激怒(げきど)
+
+
+# 先読み表現なども使える
+echo '激怒プンプン丸が激怒' | rubygana --ruby-re '激怒(?=プンプン丸):激怒:げきおこ'
+
+# 出力
+激怒(げきおこ)プンプン丸(まる)が激怒(げきど)
+```
 
 
 #### `--grade, -g '学年'`
@@ -284,13 +303,15 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 この学年までの漢字はルビ化しない。0-7を指定。2なら3年生以降の、6なら中学校(常用漢字の残り)以降の、7で常用漢字以外の漢字をルビ化。  
 デフォルト: `0`
 
-    # 常用漢字以外だけルビ化なら7
-    rubygana --sample-text | rubygana -g 7
+```
+# 常用漢字以外だけルビ化なら7
+rubygana --sample-text | rubygana -g 7
 
-    # 出力
-    不思議の国のアリス
-    「猫が蝙蝠(こうもり)を食べるの? 蝙蝠(こうもり)が猫を食うの?」
-    アリスは白ウサギの穴に落下しながら呟(つぶや)いた。すると突然…
+# 出力
+不思議の国のアリス
+「猫が蝙蝠(こうもり)を食べるの? 蝙蝠(こうもり)が猫を食うの?」
+アリスは白ウサギの穴に落下しながら呟(つぶや)いた。すると突然…
+```
 
 
 学年の判断は、文科省[学年別漢字配当表][]、文化庁[常用漢字表][]による。
@@ -305,10 +326,12 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 デフォルト: `0`
 
 
-    echo 'お気に入り' | rubygana --html -G 2 --only-body
+```
+echo 'お気に入り' | rubygana --html -G 2 --only-body
 
-    # 出力
-    <ruby><rb>お気に入り</rb><rt>おきにいり</rt></ruby>
+# 出力
+<ruby><rb>お気に入り</rb><rt>おきにいり</rt></ruby>
+```
 
 
 #### `--brackets, -b '括弧'`
@@ -316,18 +339,22 @@ HTML扱いしてルビ化。冒頭にDOCTYPEやxml宣言があれば自動判別
 括弧を変更したいなら。例 '[]'  
 デフォルト: `()`
 
-    # 指定文字が奇数個なら、左側に一つ多く配分
-    echo '蝙蝠' | rubygana -b '(=)'
+```
+# 指定文字が奇数個なら、左側に一つ多く配分
+echo '蝙蝠' | rubygana -b '(=)'
 
-    # 出力
-    蝙蝠(=こうもり)
+# 出力
+蝙蝠(=こうもり)
+```
 
 
 #### `--katakana, -K`
 カタカナのルビに(デフォルトはひらがな)
 
-    echo 'アリスはそう呟いた。すると突然…' | rubygana --katakana
-    => アリスはそう呟(ツブヤ)いた。すると突然(トツゼン)…
+```
+echo 'アリスはそう呟いた。すると突然…' | rubygana --katakana
+=> アリスはそう呟(ツブヤ)いた。すると突然(トツゼン)…
+```
 
 
 -------------------------------------------------
@@ -347,15 +374,17 @@ body要素の中身だけ出力(bodyタグ含まず)(`--comment`は出力)。以
 例: `#id, p.クラス, ol>li:nth-child(1)`  
 デフォルト: `body`
 
-    # ol要素直下の1番目li要素と、文クラスのp要素だけルビ化
-    rubygana --sample-html | rubygana -s 'ol>li:nth-child(1), p.文'
+```
+# ol要素直下の1番目li要素と、文クラスのp要素だけルビ化
+rubygana --sample-html | rubygana -s 'ol>li:nth-child(1), p.文'
 
 
-    # 「要素>*」にすると、要素直下の漢字は対象にならない
-    echo '<p>猫と<span>蝙蝠</span></p>' | rubygana --html -s 'p>*' --only-body
+# 「要素>*」にすると、要素直下の漢字は対象にならない
+echo '<p>猫と<span>蝙蝠</span></p>' | rubygana --html -s 'p>*' --only-body
 
-    # 出力
-    <p>猫と<span><ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby></span></p>
+# 出力
+<p>猫と<span><ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby></span></p>
+```
 
 
 ####  `--not-selector, -n '除外セレクタ'`
@@ -365,18 +394,20 @@ body要素の中身だけ出力(bodyタグ含まず)(`--comment`は出力)。以
 デフォルト(`-h`の時): `ruby,script,style,code,pre,samp,blockquote`  
 デフォルト(`-a`の時): 空
 
-    # p要素をルビ化したいが、そのうち無視クラスを除外したいとき
-    echo '<p class="無視">猫</p><p>蝙蝠</p>' | rubygana --html -s 'p' -n '.無視' --only-body
+```
+# p要素をルビ化したいが、そのうち無視クラスを除外したいとき
+echo '<p class="無視">猫</p><p>蝙蝠</p>' | rubygana --html -s 'p' -n '.無視' --only-body
 
-    # 出力
-    <p class="無視">猫</p><p><ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby></p>
+# 出力
+<p class="無視">猫</p><p><ruby><rb>蝙蝠</rb><rt>こうもり</rt></ruby></p>
 
 
-    # 該当した`-s`そのもの(と子孫)を除外できるが、該当しなかった`-s`の子孫は除外できない
-    echo '<div><p>猫</p></div><p>蝙蝠</p>' | rubygana --html -s 'body>*' -n 'p' --only-body
+# 該当した`-s`そのもの(と子孫)を除外できるが、該当しなかった`-s`の子孫は除外できない
+echo '<div><p>猫</p></div><p>蝙蝠</p>' | rubygana --html -s 'body>*' -n 'p' --only-body
 
-    # 出力
-    <div><p><ruby><rb>猫</rb><rt>ねこ</rt></ruby></p></div><p>蝙蝠</p>
+# 出力
+<div><p><ruby><rb>猫</rb><rt>ねこ</rt></ruby></p></div><p>蝙蝠</p>
+```
 
 
 #### `--ng-elements, -N '除外要素'`
@@ -384,11 +415,13 @@ body要素の中身だけ出力(bodyタグ含まず)(`--comment`は出力)。以
 `-s`の子孫から除外する要素を`|`区切りで。`-s`そのものから除外するには、`--not-selector`  
 デフォルト: `ruby|script|style|code|pre|samp|blockquote`
 
-    # 絶対に除外したい要素で使う。(最低限scriptとstyleは除外推奨)
-    echo '<p>猫と<a>蝙蝠</a></p>' | rubygana --html -N 'a' --only-body
+```
+# 絶対に除外したい要素で使う。(最低限scriptとstyleは除外推奨)
+echo '<p>猫と<a>蝙蝠</a></p>' | rubygana --html -N 'a' --only-body
 
-    # 出力
-    <p><ruby><rb>猫</rb><rt>ねこ</rt></ruby>と<a>蝙蝠</a></p>
+# 出力
+<p><ruby><rb>猫</rb><rt>ねこ</rt></ruby>と<a>蝙蝠</a></p>
+```
 
 
 #### `--css, -c ['CSS']`
@@ -411,10 +444,12 @@ head要素末尾に下記style要素追加。ルビのフォントサイズ(漢�
 
 rp要素(ルビ非対応ブラウザのための括弧書き)を使用する。
 
-    echo 猫なの? | rubygana -H --use-rp --only-body
+```
+echo 猫なの? | rubygana -H --use-rp --only-body
 
-     # 出力
-    <ruby><rb>猫</rb><rp>(</rp><rt>ねこ</rt><rp>)</rp></ruby>なの?
+ # 出力
+<ruby><rb>猫</rb><rp>(</rp><rt>ねこ</rt><rp>)</rp></ruby>なの?
+```
 
 
 #### `--title, -T 'タイトル'`
@@ -443,15 +478,19 @@ rubyganaコマンド実行に関するコメントを末尾に追加。
 
 `--html`のとき: body要素末尾に改行と下記4行挿入。スタイルが`display:none`のため、ソースからなら確認できるコメント。
 
-    <!-- この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。 -->
-    <pre style="display:none;"><code>
-    ここに実際に実行したコマンドオプション・引数が入る
-    </code></pre>
+```
+<!-- この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。 -->
+<pre style="display:none;"><code>
+ここに実際に実行したコマンドオプション・引数が入る
+</code></pre>
+```
 
 `--text`のとき: 文書末尾に改行と下記2行追記。
 
-    # この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。
-    # ここに実際に実行したコマンドオプション・引数が入る
+```
+# この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。
+# ここに実際に実行したコマンドオプション・引数が入る
+```
 
 
 #### `--debug, -d`
@@ -469,20 +508,22 @@ rubyganaコマンド実行に関するコメントを末尾に追加。
 
 ## 1行ルビ族
 
-    # ダウンロードし、ルビ化し、firefoxで開く
-    page='ja.wikipedia.org/wiki/不思議の国のアリス'; wget --page-requisites --convert-links "https://$page" && rubygana $page > $page.ruby.html; firefox $page.ruby.html &
+```
+# ダウンロードし、ルビ化し、firefoxで開く
+page='ja.wikipedia.org/wiki/不思議の国のアリス'; wget --page-requisites --convert-links "https://$page" && rubygana $page > $page.ruby.html; firefox $page.ruby.html &
 
 
-    # 入力の文字コードはUTF-8のみ受付:
-    # 違うならiconvコマンドなどで変換してから
-    cat shift-jis.txt | iconv -f 'shift-jis' -t 'utf8' | rubygana
-    # (標準出力の文字コードは端末の設定で変更)
+# 入力の文字コードはUTF-8のみ受付:
+# 違うならiconvコマンドなどで変換してから
+cat shift-jis.txt | iconv -f 'shift-jis' -t 'utf8' | rubygana
+# (標準出力の文字コードは端末の設定で変更)
 
 
-    # サンプルテキストを出力し、それをHTML化し、次にh1だけカタカナでルビ振りし、そしてp要素を2年生超でルビ振りし、
-    # そして学年クラス名を付加して中学生以上常用漢字ルビは青色で常用漢字以外ルビは赤色スタイルにして、
-    # それをalice.htmlとして保存し、それをFirefoxで開く。
-    rubygana -A | rubygana -w | rubygana -HKs 'h1' | rubygana -s 'p' -g 2 | rubygana -ac 'ruby[class$="7"]>rt{color:blue;}ruby[class$="8"]>rt{color:red;}' > alice.html; firefox alice.html &
+# サンプルテキストを出力し、それをHTML化し、次にh1だけカタカナでルビ振りし、そしてp要素を2年生超でルビ振りし、
+# そして学年クラス名を付加して中学生以上常用漢字ルビは青色で常用漢字以外ルビは赤色スタイルにして、
+# それをalice.htmlとして保存し、それをFirefoxで開く。
+rubygana -A | rubygana -w | rubygana -HKs 'h1' | rubygana -s 'p' -g 2 | rubygana -ac 'ruby[class$="7"]>rt{color:blue;}ruby[class$="8"]>rt{color:red;}' > alice.html; firefox alice.html &
+```
 
 
 

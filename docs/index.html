@@ -62,14 +62,14 @@ function 表示切り替え(i, checked){
 <li>テキスト<ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby></li>
 <li>マークダウン</li>
 </ul>
-<h3 id="rubyルビ族のルビ族によるルビ族のためのコマンドrtルビ族女帝にあたいはなるっrtruby"><ruby>ルビ族のルビ族によるルビ族のためのコマンド<rt>ルビ族女帝にあたいはなるっ!</rt></ruby></h3>
+<h3 id="ルビ族のルビ族によるルビ族のためのコマンドルビ族女帝にあたいはなるっ"><ruby>ルビ族のルビ族によるルビ族のためのコマンド<rt>ルビ族女帝にあたいはなるっ!</rt></ruby></h3>
 <ul>
 <li><ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>を<ruby class="学年1"><rb>学</rb><rt>まな</rt></ruby>び<ruby class="学年3"><rb>始</rb><rt>はじ</rt></ruby>めた<ruby class="学年1"><rb>人</rb><rt>ひと</rt></ruby></li>
 <li><ruby class="学年2 学年3"><rb>教育</rb><rt>きょういく</rt></ruby><ruby class="学年4 学年3"><rb>関係</rb><rt>かんけい</rt></ruby><ruby class="学年3"><rb>者</rb><rt>しゃ</rt></ruby>、<ruby class="学年1 学年5"><rb>出版</rb><rt>しゅっぱん</rt></ruby><ruby class="学年2"><rb>社</rb><rt>しゃ</rt></ruby></li>
 <li>ルビ<ruby class="学年4"><rb>付</rb><rt>つ</rt></ruby>きHTMLを<ruby class="学年7"><rb>迫</rb><rt>せま</rt></ruby>られて<ruby class="学年7"><rb>悩</rb><rt>なや</rt></ruby>むエンジニア</li>
 </ul>
 <p>ルビ<ruby class="学年3"><rb>族</rb><rt>ぞく</rt></ruby><ruby class="学年4 学年2"><rb>以外</rb><rt>いがい</rt></ruby>もどうぞ!</p>
-<h2 id="特徴rubygana-073"><ruby class="学年4 学年7"><rb>特徴</rb><rt>とくちょう</rt></ruby>(rubygana 0.7.3)</h2>
+<h2 id="特徴rubygana-081"><ruby class="学年4 学年7"><rb>特徴</rb><rt>とくちょう</rt></ruby>(rubygana 0.8.1)</h2>
 <ol>
 <li><h5 id="htmlのルビ化">HTMLのルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby></h5>
 <p><code>&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;</code></p>
@@ -78,7 +78,7 @@ function 表示切り替え(i, checked){
 <p> <code>蝙蝠(こうもり)</code></p>
 </li>
 <li><h5 id="ルビ化ずみhtmlに学年クラス名挿入">ルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>ずみHTMLに<ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>クラス<ruby class="学年1"><rb>名</rb><rt>めい</rt></ruby><ruby class="学年7 学年1"><rb>挿入</rb><rt>そうにゅう</rt></ruby></h5>
-<p> <code>&lt;ruby class="学年3 学年1"&gt;&lt;rb&gt;落下&lt;/rb&gt;&lt;rt&gt;らっか&lt;/rt&gt;&lt;/ruby&gt;</code></p>
+<p> <code>&lt;ruby class=&quot;学年3 学年1&quot;&gt;&lt;rb&gt;落下&lt;/rb&gt;&lt;rt&gt;らっか&lt;/rt&gt;&lt;/ruby&gt;</code></p>
 </li>
 <li><h5 id="マークダウンのhtml5化">マークダウンのHTML5<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby></h5>
 </li>
@@ -111,7 +111,8 @@ cd rubygana/
 npm install --global
 
 # もうrubyganaコマンドが使えるぞ
-rubygana --help</code></pre><h4 id="依存ライブラリに感謝"><ruby class="学年7 学年6"><rb>依存</rb><rt>いぞん</rt></ruby>ライブラリに<ruby class="学年3 学年5"><rb>感謝</rb><rt>かんしゃ</rt></ruby></h4>
+rubygana --help</code></pre>
+<h4 id="依存ライブラリに感謝"><ruby class="学年7 学年6"><rb>依存</rb><rt>いぞん</rt></ruby>ライブラリに<ruby class="学年3 学年5"><rb>感謝</rb><rt>かんしゃ</rt></ruby></h4>
 <ul>
 <li><ruby class="学年1 学年1 学年2"><rb>日本語</rb><rt>にほんご</rt></ruby><ruby class="学年5 学年7"><rb>解析</rb><rt>かいせき</rt></ruby>: <a href="https://www.npmjs.com/package/kuromoji">kuromoji.js</a></li>
 <li>マークダウンのタグ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>: <a href="https://www.npmjs.com/package/marked">marked</a></li>
@@ -121,11 +122,13 @@ rubygana --help</code></pre><h4 id="依存ライブラリに感謝"><ruby class=
 <p>MIT License<br>©  2018 ころん:すとりーむ</p>
 <hr>
 <h2 id="使用法"><ruby class="学年3 学年2"><rb>使用</rb><rt>しよう</rt></ruby><ruby class="学年4"><rb>法</rb><rt>ほう</rt></ruby></h2>
-<pre><code>rubygana [オプション...] [ファイル]</code></pre><p><ruby class="学年1"><rb>一</rb><rt>ひと</rt></ruby>つのファイル<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>か<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>入力</rb><rt>にゅうりょく</rt></ruby>が<ruby class="学年4 学年4"><rb>必要</rb><rt>ひつよう</rt></ruby>で、<ruby class="学年4 学年4"><rb>結果</rb><rt>けっか</rt></ruby>はすべて<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>。</p>
-<pre><code>echo '猫と蝙蝠' | rubygana
+<pre><code>rubygana [オプション...] [ファイル]</code></pre>
+<p><ruby class="学年1"><rb>一</rb><rt>ひと</rt></ruby>つのファイル<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>か<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>入力</rb><rt>にゅうりょく</rt></ruby>が<ruby class="学年4 学年4"><rb>必要</rb><rt>ひつよう</rt></ruby>で、<ruby class="学年4 学年4"><rb>結果</rb><rt>けっか</rt></ruby>はすべて<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>。</p>
+<pre><code>echo &apos;猫と蝙蝠&apos; | rubygana
 
 # 出力
-猫(ねこ)と蝙蝠(こうもり)</code></pre><p>ルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>の<ruby class="学年5"><rb>際</rb><rt>さい</rt></ruby>、kuromoji.jsのビルドに1、2<ruby class="学年3"><rb>秒</rb><rt>びょう</rt></ruby>かかります。</p>
+猫(ねこ)と蝙蝠(こうもり)</code></pre>
+<p>ルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>の<ruby class="学年5"><rb>際</rb><rt>さい</rt></ruby>、kuromoji.jsのビルドに1、2<ruby class="学年3"><rb>秒</rb><rt>びょう</rt></ruby>かかります。</p>
 <hr>
 <h2 id="オプション">オプション</h2>
 <ol>
@@ -134,18 +137,23 @@ rubygana --help</code></pre><h4 id="依存ライブラリに感謝"><ruby class=
          [-s セレクタ] [-n 除外セレクタ] [-N 除外要素]
          [-c [CSS]] [-T タイトル] [--ruby-size [フォント倍率]]
          [--ruby [フレーズ:]単語:ルビ]
-         [--ruby-re 正規表現:単語:ルビ] [ファイル]</code></pre></li>
+         [--ruby-re 正規表現:単語:ルビ] [ファイル]</code></pre>
+</li>
 <li><h3 id="テキスト文書のルビ化---text">テキスト<ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby>のルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>: --text</h3>
 <pre><code>rubygana [-tKC] [-b 括弧] [-g 学年] [-G 粒度]
          [--ruby [フレーズ:]単語:ルビ]
-         [--ruby-re 正規表現:単語:ルビ] [ファイル]</code></pre></li>
+         [--ruby-re 正規表現:単語:ルビ] [ファイル]</code></pre>
+</li>
 <li><h3 id="学年クラス名付加---add-class"><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>クラス<ruby class="学年1"><rb>名</rb><rt>めい</rt></ruby><ruby class="学年4 学年4"><rb>付加</rb><rt>ふか</rt></ruby>: --add-class</h3>
 <pre><code>rubygana -a [-y] [クラス頭語] [-c [CSS]] [--switch]
-         [-s セレクタ] [-n 除外セレクタ] [ファイル]</code></pre></li>
+         [-s セレクタ] [-n 除外セレクタ] [ファイル]</code></pre>
+</li>
 <li><h3 id="マークダウンのhtml5化---md-html">マークダウンのHTML5<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>: --md-html</h3>
-<pre><code>rubygana -m [-c [CSS]] [-T タイトル] [-L 見出し] [ファイル]</code></pre></li>
+<pre><code>rubygana -m [-c [CSS]] [-T タイトル] [-L 見出し] [ファイル]</code></pre>
+</li>
 <li><h3 id="テキスト文書のhtml5化---text-html">テキスト<ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby>のHTML5<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>: --text-html</h3>
-<pre><code>rubygana -w [-c [CSS]] [-T タイトル] [-L 見出し] [ファイル]</code></pre></li>
+<pre><code>rubygana -w [-c [CSS]] [-T タイトル] [-L 見出し] [ファイル]</code></pre>
+</li>
 </ol>
 <p>その<ruby class="学年3"><rb>他</rb><rt>た</rt></ruby>オプション(<ruby class="学年2 学年2"><rb>引数</rb><rt>ひきすう</rt></ruby>なし):  </p>
 <pre><code>-A, --sample-text   サンプルテキスト出力  
@@ -159,29 +167,33 @@ rubygana --help</code></pre><h4 id="依存ライブラリに感謝"><ruby class=
 -V, --version       バージョン情報  
 -い, --依存          依存ライブラリ確認  
 -ら, --ライセンス     ライセンス情報  
--☺ , --感謝</code></pre><hr>
+-☺ , --感謝</code></pre>
+<hr>
 <h3 id="コマンドグループ">コマンドグループ:</h3>
 <h4 id="--html--h"><code>--html, -H</code></h4>
 <p>HTML<ruby class="学年7"><rb>扱</rb><rt>あつか</rt></ruby>いしてルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>。<ruby class="学年7 学年2"><rb>冒頭</rb><rt>ぼうとう</rt></ruby>にDOCTYPEやxml<ruby class="学年6 学年2"><rb>宣言</rb><rt>せんげん</rt></ruby>があれば<ruby class="学年2 学年3"><rb>自動</rb><rt>じどう</rt></ruby><ruby class="学年5 学年4"><rb>判別</rb><rt>はんべつ</rt></ruby>のため、<ruby class="学年4 学年5"><rb>省略</rb><rt>しょうりゃく</rt></ruby><ruby class="学年5"><rb>可</rb><rt>か</rt></ruby>。  </p>
 <pre><code># DOCTYPEやxml宣言がないのにHTML扱いしたい場合
-echo '蝙蝠なの?' | rubygana -H --only-body
+echo &apos;蝙蝠なの?&apos; | rubygana -H --only-body
 
 # 出力
-&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;なの?</code></pre><h4 id="--text--t"><code>--text, -t</code></h4>
+&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;なの?</code></pre>
+<h4 id="--text--t"><code>--text, -t</code></h4>
 <p>テキスト<ruby class="学年7"><rb>扱</rb><rt>あつか</rt></ruby>いしてルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>。</p>
 <pre><code># DOCTYPEやxml宣言あるのにテキスト扱いしたい場合
-echo '蝙蝠なの?' | rubygana -t
+echo &apos;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;蝙蝠なの?&lt;/body&gt;&lt;/html&gt;&apos; | rubygana -t
 
 # 出力
-蝙蝠(こうもり)なの?</code></pre><h4 id="--add-class--a-クラス頭語"><code>--add-class, -a ['クラス頭語']</code></h4>
+&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;蝙蝠(こうもり)なの?&lt;/body&gt;&lt;/html&gt;</code></pre>
+<h4 id="--add-class--a-クラス頭語"><code>--add-class, -a [&apos;クラス頭語&apos;]</code></h4>
 <p><ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>の<ruby class="学年1 学年3"><rb>学習</rb><rt>がくしゅう</rt></ruby><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>をruby<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>のクラス<ruby class="学年1"><rb>名</rb><rt>めい</rt></ruby>に<ruby class="学年4 学年4"><rb>付加</rb><rt>ふか</rt></ruby>。すでにruby<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>があるHTMLに<ruby class="学年3"><rb>対</rb><rt>たい</rt></ruby>してこの<ruby class="学年3 学年2"><rb>動作</rb><rt>どうさ</rt></ruby>だけを<ruby class="学年2"><rb>行</rb><rt>おこな</rt></ruby>い、<ruby class="学年2"><rb>新</rb><rt>あら</rt></ruby>たなルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>はしない。<ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby><ruby class="学年4"><rb>別</rb><rt>べつ</rt></ruby>に<ruby class="学年2 学年2"><rb>色分</rb><rt>いろわ</rt></ruby>けしたいとか。<br>デフォルト: <code>学年</code></p>
 <pre><code># 「落」は3年生、「下」は1年生なので
-echo '落下' | rubygana -H | rubygana -a --only-body
+echo &apos;落下&apos; | rubygana -H | rubygana -a --only-body
 
 # 出力
-&lt;ruby class="学年3 学年1"&gt;&lt;rb&gt;落下&lt;/rb&gt;&lt;rt&gt;らっか&lt;/rt&gt;&lt;/ruby&gt;
+&lt;ruby class=&quot;学年3 学年1&quot;&gt;&lt;rb&gt;落下&lt;/rb&gt;&lt;rt&gt;らっか&lt;/rt&gt;&lt;/ruby&gt;
 
-# &lt;ruby&gt;&lt;rb&gt;中学生&lt;/rb&gt;&lt;rt&gt;ちゅうがくせい&lt;/rt&gt;&lt;/ruby&gt;&lt;ruby&gt;&lt;rb&gt;以降&lt;/rb&gt;&lt;rt&gt;いこう&lt;/rt&gt;&lt;/ruby&gt;は「&lt;ruby&gt;&lt;rb&gt;学年&lt;/rb&gt;&lt;rt&gt;がくねん&lt;/rt&gt;&lt;/ruby&gt;7」、&lt;ruby&gt;&lt;rb&gt;常用漢字&lt;/rb&gt;&lt;rt&gt;じょうようかんじ&lt;/rt&gt;&lt;/ruby&gt;&lt;ruby&gt;&lt;rb&gt;以外&lt;/rb&gt;&lt;rt&gt;いがい&lt;/rt&gt;&lt;/ruby&gt;の&lt;ruby&gt;&lt;rb&gt;漢字&lt;/rb&gt;&lt;rt&gt;かんじ&lt;/rt&gt;&lt;/ruby&gt;は「&lt;ruby&gt;&lt;rb&gt;学年&lt;/rb&gt;&lt;rt&gt;がくねん&lt;/rt&gt;&lt;/ruby&gt;8」</code></pre><h4 id="--md-html--m"><code>--md-html, -m</code></h4>
+# 中学生以降は「学年7」、常用漢字以外の漢字は「学年8」</code></pre>
+<h4 id="--md-html--m"><code>--md-html, -m</code></h4>
 <p>ルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>はせず、<ruby class="学年4"><rb>単</rb><rt>たん</rt></ruby>にマークダウンをHTML5<ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby>に<ruby class="学年4 学年7"><rb>変換</rb><rt>へんかん</rt></ruby>。h1<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>になるものをタイトル(title<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>)にする。<ruby class="学年4 学年7"><rb>変更</rb><rt>へんこう</rt></ruby>は<code>--headline</code>と<code>--title</code></p>
 <h4 id="--text-html--w"><code>--text-html, -w</code></h4>
 <p>ルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>はせず、<ruby class="学年4"><rb>単</rb><rt>たん</rt></ruby>にテキスト<ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby>をHTML5<ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby>に<ruby class="学年4 学年7"><rb>変換</rb><rt>へんかん</rt></ruby>。テキストは<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby>ごとにp<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>に<ruby class="学年1"><rb>入</rb><rt>い</rt></ruby>れ(<ruby class="学年1 学年2"><rb>空行</rb><rt>くうぎょう</rt></ruby>は<ruby class="学年3 学年4"><rb>対象</rb><rt>たいしょう</rt></ruby><ruby class="学年2"><rb>外</rb><rt>がい</rt></ruby>)、<ruby class="学年7 学年2"><rb>冒頭</rb><rt>ぼうとう</rt></ruby>の<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby>を<ruby class="学年1 学年1"><rb>見出</rb><rt>みいだ</rt></ruby>し(h1<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>)とタイトル(title<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>)にする。<ruby class="学年4 学年7"><rb>変更</rb><rt>へんこう</rt></ruby>は<code>--headline</code>と<code>--title</code></p>
@@ -190,57 +202,61 @@ echo '落下' | rubygana -H | rubygana -a --only-body
 <p><ruby class="学年3 学年3"><rb>練習</rb><rt>れんしゅう</rt></ruby><ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>サンプルとして、ルビのない<ruby class="学年1 学年2"><rb>下記</rb><rt>かき</rt></ruby>3<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby>テキストを<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>。</p>
 <pre><code>不思議の国のアリス
 「猫が蝙蝠を食べるの? 蝙蝠が猫を食うの?」
-アリスは白ウサギの穴に落下しながら呟いた。すると突然…</code></pre><h4 id="--sample-html--b"><code>--sample-html, -B</code></h4>
+アリスは白ウサギの穴に落下しながら呟いた。すると突然…</code></pre>
+<h4 id="--sample-html--b"><code>--sample-html, -B</code></h4>
 <p><ruby class="学年3 学年3"><rb>練習</rb><rt>れんしゅう</rt></ruby><ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>サンプルとして、ルビのないHTMLを<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>。</p>
 <h4 id="--sample-md--m"><code>--sample-md, -M</code></h4>
 <p><ruby class="学年3 学年3"><rb>練習</rb><rt>れんしゅう</rt></ruby><ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>サンプルとして、ルビのないマークダウンを<ruby class="学年4 学年5"><rb>標準</rb><rt>ひょうじゅん</rt></ruby><ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>。</p>
 <hr>
 <h3 id="ルビの調整-1">ルビの<ruby class="学年3 学年3"><rb>調整</rb><rt>ちょうせい</rt></ruby>:</h3>
-<h4 id="--ruby-フレーズ単語ルビ"><code>--ruby '[フレーズ:]単語:ルビ'</code></h4>
+<h4 id="--ruby-フレーズ単語ルビ"><code>--ruby &apos;[フレーズ:]単語:ルビ&apos;</code></h4>
 <p>ルビを<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>したいなら。フレーズ(<ruby class="学年4 学年2"><rb>改行</rb><rt>かいぎょう</rt></ruby>なし)で、フレーズ<ruby class="学年2"><rb>内</rb><rt>ない</rt></ruby>の<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>のみに<ruby class="学年2 学年2"><rb>作用</rb><rt>さよう</rt></ruby>。<ruby class="学年5 学年2"><rb>複数</rb><rt>ふくすう</rt></ruby><ruby class="学年2"><rb>回</rb><rt>かい</rt></ruby><ruby class="学年3 学年2"><rb>使用</rb><rt>しよう</rt></ruby><ruby class="学年5"><rb>可</rb><rt>か</rt></ruby>。マッチした<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>には<code>--grade</code>など<ruby class="学年2 学年3"><rb>自動</rb><rt>じどう</rt></ruby>ルビ<ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>オプションの<ruby class="学年7 学年7"><rb>影響</rb><rt>えいきょう</rt></ruby>なし。フレーズに:が<ruby class="学年7"><rb>含</rb><rt>ふく</rt></ruby>まれるなら<ruby class="学年3"><rb>代</rb><rt>か</rt></ruby>わりに<code>--ruby-comma</code>を<ruby class="学年3 学年2"><rb>使用</rb><rt>しよう</rt></ruby>。</p>
 <pre><code># 自動のルビが不味いときや、工夫したいときに使う。
-echo '反復横飛びの無限反復' | rubygana -r '無限反復:反復:ループ'
+echo &apos;反復横飛びの無限反復&apos; | rubygana -r &apos;無限反復:反復:ループ&apos;
 
 # 出力
 反復(はんぷく)横(よこ)飛(と)びの無限(むげん)反復(ループ)
 
 
 # --rubyはいくつも使用できるが、同じフレーズ・単語は先のものが優先
-echo 猫と蝙蝠 | rubygana -r '猫:cat' -r '猫:きゃっと' -r '蝙蝠:bat'
+echo 猫と蝙蝠 | rubygana -r &apos;猫:cat&apos; -r &apos;猫:きゃっと&apos; -r &apos;蝙蝠:bat&apos;
 
 # 出力
 猫(cat)と蝙蝠(bat)
 
 
 # --htmlでも
-echo '猫の一撃をくらった' | rubygana --html -r '猫の一撃:ネコパーンチ' --only-body
+echo &apos;猫の一撃をくらった&apos; | rubygana --html -r &apos;猫の一撃:ネコパーンチ&apos; --only-body
 
 # 出力
-&lt;ruby&gt;&lt;rb&gt;猫の一撃&lt;/rb&gt;&lt;rt&gt;ネコパーンチ&lt;/rt&gt;&lt;/ruby&gt;をくらった</code></pre><h4 id="--ruby-comma-フレーズ単語ルビ"><code>--ruby-comma '[フレーズ,]単語,ルビ'</code></h4>
+&lt;ruby&gt;&lt;rb&gt;猫の一撃&lt;/rb&gt;&lt;rt&gt;ネコパーンチ&lt;/rt&gt;&lt;/ruby&gt;をくらった</code></pre>
+<h4 id="--ruby-comma-フレーズ単語ルビ"><code>--ruby-comma &apos;[フレーズ,]単語,ルビ&apos;</code></h4>
 <p><code>--ruby</code>の<ruby class="学年3"><rb>代</rb><rt>か</rt></ruby>わりに<ruby class="学年3"><rb>使</rb><rt>つか</rt></ruby>う。<ruby class="学年7"><rb>違</rb><rt>ちが</rt></ruby>う<ruby class="学年2"><rb>点</rb><rt>てん</rt></ruby>は<ruby class="学年2 学年2"><rb>引数</rb><rt>ひきすう</rt></ruby>が,<ruby class="学年3 学年2"><rb>区切</rb><rt>くぎ</rt></ruby>り。</p>
-<pre><code>echo 'ねえ、:コマンドって知ってる?' | rubygana --ruby-comma ':,コロン'
+<pre><code>echo &apos;ねえ、:コマンドって知ってる?&apos; | rubygana --ruby-comma &apos;:,コロン&apos;
 
 # 出力
-ねえ、:(コロン)コマンドって知(し)ってる?</code></pre><h4 id="--ruby-re-正規表現単語ルビ"><code>--ruby-re '正規表現:単語:ルビ'</code></h4>
+ねえ、:(コロン)コマンドって知(し)ってる?</code></pre>
+<h4 id="--ruby-re-正規表現単語ルビ"><code>--ruby-re &apos;正規表現:単語:ルビ&apos;</code></h4>
 <p><ruby class="学年1 学年5"><rb>正規</rb><rt>せいき</rt></ruby><ruby class="学年3 学年5"><rb>表現</rb><rt>ひょうげん</rt></ruby>(<ruby class="学年4 学年2"><rb>改行</rb><rt>かいぎょう</rt></ruby>なし、:を<ruby class="学年3"><rb>使</rb><rt>つか</rt></ruby>わないこと)を<ruby class="学年2"><rb>用</rb><rt>もち</rt></ruby>いたルビ<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>。マッチした<ruby class="学年3 学年5"><rb>表現</rb><rt>ひょうげん</rt></ruby><ruby class="学年1"><rb>中</rb><rt>ちゅう</rt></ruby>の<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>のみに<ruby class="学年2 学年2"><rb>作用</rb><rt>さよう</rt></ruby>。<ruby class="学年5 学年2"><rb>複数</rb><rt>ふくすう</rt></ruby><ruby class="学年2"><rb>回</rb><rt>かい</rt></ruby><ruby class="学年3 学年2"><rb>使用</rb><rt>しよう</rt></ruby><ruby class="学年5"><rb>可</rb><rt>か</rt></ruby>。マッチした<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>には<code>--grade</code>など<ruby class="学年2 学年3"><rb>自動</rb><rt>じどう</rt></ruby>ルビ<ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>オプションの<ruby class="学年7 学年7"><rb>影響</rb><rt>えいきょう</rt></ruby>なし。<ruby class="学年1 学年5"><rb>正規</rb><rt>せいき</rt></ruby><ruby class="学年3 学年5"><rb>表現</rb><rt>ひょうげん</rt></ruby>はJavaScriptのRegExpで<ruby class="学年5 学年5"><rb>評価</rb><rt>ひょうか</rt></ruby>。</p>
-<pre><code>echo '1行2行、一行は四行も空行にした' | rubygana --ruby-re '[0-9四]行:行:ぎょう' --ruby '空行:くうぎょう'
+<pre><code>echo &apos;1行2行、一行は四行も空行にした&apos; | rubygana --ruby-re &apos;[0-9四]行:行:ぎょう&apos; --ruby &apos;空行:くうぎょう&apos;
 
 # 出力
 1行(ぎょう)2行(ぎょう)、一行(いっこう)は四(よん)行(ぎょう)も空行(くうぎょう)にした
 
 
 # マッチした表現に単語が複数回現れる場合、一つ目にのみルビが付く
-echo '激怒激怒' | rubygana --ruby-re '(激怒)+:激怒:プンプン'
+echo &apos;激怒激怒&apos; | rubygana --ruby-re &apos;(激怒)+:激怒:プンプン&apos;
 
 # 出力
 激怒(プンプン)激怒(げきど)
 
 
 # 先読み表現なども使える
-echo '激怒プンプン丸が激怒' | rubygana --ruby-re '激怒(?=プンプン丸):激怒:げきおこ'
+echo &apos;激怒プンプン丸が激怒&apos; | rubygana --ruby-re &apos;激怒(?=プンプン丸):激怒:げきおこ&apos;
 
 # 出力
-激怒(げきおこ)プンプン丸(まる)が激怒(げきど)</code></pre><h4 id="--grade--g-学年"><code>--grade, -g '学年'</code></h4>
+激怒(げきおこ)プンプン丸(まる)が激怒(げきど)</code></pre>
+<h4 id="--grade--g-学年"><code>--grade, -g &apos;学年&apos;</code></h4>
 <p>この<ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>までの<ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>はルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>しない。0-7を<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>。2なら3<ruby class="学年1 学年1"><rb>年生</rb><rt>ねんせい</rt></ruby><ruby class="学年4 学年6"><rb>以降</rb><rt>いこう</rt></ruby>の、6なら<ruby class="学年1 学年1 学年1"><rb>中学校</rb><rt>ちゅうがっこう</rt></ruby>(<ruby class="学年5 学年2 学年3 学年1"><rb>常用漢字</rb><rt>じょうようかんじ</rt></ruby>の<ruby class="学年4"><rb>残</rb><rt>のこ</rt></ruby>り)<ruby class="学年4 学年6"><rb>以降</rb><rt>いこう</rt></ruby>の、7で<ruby class="学年5 学年2 学年3 学年1"><rb>常用漢字</rb><rt>じょうようかんじ</rt></ruby><ruby class="学年4 学年2"><rb>以外</rb><rt>いがい</rt></ruby>の<ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>をルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>。<br>デフォルト: <code>0</code></p>
 <pre><code># 常用漢字以外だけルビ化なら7
 rubygana --sample-text | rubygana -g 7
@@ -248,56 +264,63 @@ rubygana --sample-text | rubygana -g 7
 # 出力
 不思議の国のアリス
 「猫が蝙蝠(こうもり)を食べるの? 蝙蝠(こうもり)が猫を食うの?」
-アリスは白ウサギの穴に落下しながら呟(つぶや)いた。すると突然…</code></pre><p><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>の<ruby class="学年5 学年5"><rb>判断</rb><rt>はんだん</rt></ruby>は、<ruby class="学年1 学年2 学年4"><rb>文科省</rb><rt>もんかしょう</rt></ruby><a href="http://www.mext.go.jp/a_menu/shotou/new-cs/youryou/syo/koku/001.htm"><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby><ruby class="学年4"><rb>別</rb><rt>べつ</rt></ruby><ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby><ruby class="学年3 学年2"><rb>配当</rb><rt>はいとう</rt></ruby><ruby class="学年3"><rb>表</rb><rt>ひょう</rt></ruby></a>、<ruby class="学年1 学年3 学年6"><rb>文化庁</rb><rt>ぶんかちょう</rt></ruby><a href="http://www.bunka.go.jp/kokugo_nihongo/sisaku/joho/joho/kijun/naikaku/kanji/"><ruby class="学年5 学年2 学年3 学年1"><rb>常用漢字</rb><rt>じょうようかんじ</rt></ruby><ruby class="学年3"><rb>表</rb><rt>ひょう</rt></ruby></a>による。</p>
-<h4 id="--granularity--g-粒度"><code>--granularity, -G '粒度'</code></h4>
-<p>かな<ruby class="学年2"><rb>交</rb><rt>ま</rt></ruby>じり<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>のルビの<ruby class="学年7"><rb>振</rb><rt>ふ</rt></ruby>り<ruby class="学年2"><rb>方</rb><rt>かた</rt></ruby>の<ruby class="学年3 学年3"><rb>調整</rb><rt>ちょうせい</rt></ruby>。0-2を<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>。<ruby class="学年4"><rb>例</rb><rt>たと</rt></ruby>えば「お<ruby class="学年1"><rb>気</rb><rt>き</rt></ruby>に<ruby class="学年1"><rb>入</rb><rt>い</rt></ruby>り」は1<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>であり、<br>0=> <code>お気(き)に入(い)り</code><br>1=> <code>お気に入(きにい)り</code><br>2=> <code>お気に入り(おきにいり)</code><br>デフォルト: <code>0</code></p>
-<pre><code>echo 'お気に入り' | rubygana --html -G 2 --only-body
+アリスは白ウサギの穴に落下しながら呟(つぶや)いた。すると突然…</code></pre>
+<p><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>の<ruby class="学年5 学年5"><rb>判断</rb><rt>はんだん</rt></ruby>は、<ruby class="学年1 学年2 学年4"><rb>文科省</rb><rt>もんかしょう</rt></ruby><a href="http://www.mext.go.jp/a_menu/shotou/new-cs/youryou/syo/koku/001.htm"><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby><ruby class="学年4"><rb>別</rb><rt>べつ</rt></ruby><ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby><ruby class="学年3 学年2"><rb>配当</rb><rt>はいとう</rt></ruby><ruby class="学年3"><rb>表</rb><rt>ひょう</rt></ruby></a>、<ruby class="学年1 学年3 学年6"><rb>文化庁</rb><rt>ぶんかちょう</rt></ruby><a href="http://www.bunka.go.jp/kokugo_nihongo/sisaku/joho/joho/kijun/naikaku/kanji/"><ruby class="学年5 学年2 学年3 学年1"><rb>常用漢字</rb><rt>じょうようかんじ</rt></ruby><ruby class="学年3"><rb>表</rb><rt>ひょう</rt></ruby></a>による。</p>
+<h4 id="--granularity--g-粒度"><code>--granularity, -G &apos;粒度&apos;</code></h4>
+<p>かな<ruby class="学年2"><rb>交</rb><rt>ま</rt></ruby>じり<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>のルビの<ruby class="学年7"><rb>振</rb><rt>ふ</rt></ruby>り<ruby class="学年2"><rb>方</rb><rt>かた</rt></ruby>の<ruby class="学年3 学年3"><rb>調整</rb><rt>ちょうせい</rt></ruby>。0-2を<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>。<ruby class="学年4"><rb>例</rb><rt>たと</rt></ruby>えば「お<ruby class="学年1"><rb>気</rb><rt>き</rt></ruby>に<ruby class="学年1"><rb>入</rb><rt>い</rt></ruby>り」は1<ruby class="学年4 学年2"><rb>単語</rb><rt>たんご</rt></ruby>であり、<br>0=&gt; <code>お気(き)に入(い)り</code><br>1=&gt; <code>お気に入(きにい)り</code><br>2=&gt; <code>お気に入り(おきにいり)</code><br>デフォルト: <code>0</code></p>
+<pre><code>echo &apos;お気に入り&apos; | rubygana --html -G 2 --only-body
 
 # 出力
-&lt;ruby&gt;&lt;rb&gt;お気に入り&lt;/rb&gt;&lt;rt&gt;おきにいり&lt;/rt&gt;&lt;/ruby&gt;</code></pre><h4 id="--brackets--b-括弧"><code>--brackets, -b '括弧'</code></h4>
-<p><ruby class="学年7 学年7"><rb>括弧</rb><rt>かっこ</rt></ruby>を<ruby class="学年4 学年7"><rb>変更</rb><rt>へんこう</rt></ruby>したいなら。<ruby class="学年4"><rb>例</rb><rt>れい</rt></ruby> '[]'<br>デフォルト: <code>()</code></p>
+&lt;ruby&gt;&lt;rb&gt;お気に入り&lt;/rb&gt;&lt;rt&gt;おきにいり&lt;/rt&gt;&lt;/ruby&gt;</code></pre>
+<h4 id="--brackets--b-括弧"><code>--brackets, -b &apos;括弧&apos;</code></h4>
+<p><ruby class="学年7 学年7"><rb>括弧</rb><rt>かっこ</rt></ruby>を<ruby class="学年4 学年7"><rb>変更</rb><rt>へんこう</rt></ruby>したいなら。<ruby class="学年4"><rb>例</rb><rt>れい</rt></ruby> &apos;[]&apos;<br>デフォルト: <code>()</code></p>
 <pre><code># 指定文字が奇数個なら、左側に一つ多く配分
-echo '蝙蝠' | rubygana -b '(=)'
+echo &apos;蝙蝠&apos; | rubygana -b &apos;(=)&apos;
 
 # 出力
-蝙蝠(=こうもり)</code></pre><h4 id="--katakana--k"><code>--katakana, -K</code></h4>
+蝙蝠(=こうもり)</code></pre>
+<h4 id="--katakana--k"><code>--katakana, -K</code></h4>
 <p>カタカナのルビに(デフォルトはひらがな)</p>
-<pre><code>echo 'アリスはそう呟いた。すると突然…' | rubygana --katakana
-=&gt; アリスはそう呟(ツブヤ)いた。すると突然(トツゼン)…</code></pre><hr>
+<pre><code>echo &apos;アリスはそう呟いた。すると突然…&apos; | rubygana --katakana
+=&gt; アリスはそう呟(ツブヤ)いた。すると突然(トツゼン)…</code></pre>
+<hr>
 <h3 id="htmlの調整">HTMLの<ruby class="学年3 学年3"><rb>調整</rb><rt>ちょうせい</rt></ruby>:</h3>
 <p>セレクタと<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>セレクタは<a href="https://www.npmjs.com/package/cheerio">cheerio</a>による。</p>
 <h4 id="--only-body--y"><code>--only-body, -y</code></h4>
 <p>body<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>の<ruby class="学年1 学年3"><rb>中身</rb><rt>なかみ</rt></ruby>だけ<ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>(bodyタグ<ruby class="学年7"><rb>含</rb><rt>ふく</rt></ruby>まず)(<code>--comment</code>は<ruby class="学年1 学年1"><rb>出力</rb><rt>しゅつりょく</rt></ruby>)。<ruby class="学年4 学年1"><rb>以下</rb><rt>いか</rt></ruby><ruby class="学年4"><rb>例</rb><rt>れい</rt></ruby>でも<ruby class="学年2 学年2"><rb>多用</rb><rt>たよう</rt></ruby>。</p>
-<h4 id="--selector--s-セレクタ"><code>--selector, -s 'セレクタ'</code></h4>
+<h4 id="--selector--s-セレクタ"><code>--selector, -s &apos;セレクタ&apos;</code></h4>
 <p>この<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>の<ruby class="学年1 学年4"><rb>子孫</rb><rt>しそん</rt></ruby>をルビ<ruby class="学年3"><rb>化</rb><rt>か</rt></ruby>。これに<ruby class="学年7 学年2"><rb>該当</rb><rt>がいとう</rt></ruby>した<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>(のうち)そのものを<code>--not-selector</code>なら<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>できるが、<code>--ng-elements</code>では<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>できない。<br><ruby class="学年4"><rb>例</rb><rt>れい</rt></ruby>: <code>#id, p.クラス, ol&gt;li:nth-child(1)</code><br>デフォルト: <code>body</code></p>
 <pre><code># ol要素直下の1番目li要素と、文クラスのp要素だけルビ化
-rubygana --sample-html | rubygana -s 'ol&gt;li:nth-child(1), p.文'
+rubygana --sample-html | rubygana -s &apos;ol&gt;li:nth-child(1), p.文&apos;
 
 
 # 「要素&gt;*」にすると、要素直下の漢字は対象にならない
-echo '&lt;p&gt;猫と&lt;span&gt;蝙蝠&lt;/span&gt;&lt;/p&gt;' | rubygana --html -s 'p&gt;*' --only-body
+echo &apos;&lt;p&gt;猫と&lt;span&gt;蝙蝠&lt;/span&gt;&lt;/p&gt;&apos; | rubygana --html -s &apos;p&gt;*&apos; --only-body
 
 # 出力
-&lt;p&gt;猫と&lt;span&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/span&gt;&lt;/p&gt;</code></pre><h4 id="--not-selector--n-除外セレクタ"><code>--not-selector, -n '除外セレクタ'</code></h4>
+&lt;p&gt;猫と&lt;span&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/span&gt;&lt;/p&gt;</code></pre>
+<h4 id="--not-selector--n-除外セレクタ"><code>--not-selector, -n &apos;除外セレクタ&apos;</code></h4>
 <p><code>-s</code>そのものから<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>(<ruby class="学年1 学年4"><rb>子孫</rb><rt>しそん</rt></ruby>を<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>するのではない)。<code>-s</code>のデフォルトはbodyなので、<code>-s</code>と<ruby class="学年1 学年7"><rb>一緒</rb><rt>いっしょ</rt></ruby>に<ruby class="学年3"><rb>使</rb><rt>つか</rt></ruby>う。<br><ruby class="学年4"><rb>例</rb><rt>れい</rt></ruby>: <code>li.クラス</code><br>デフォルト(<code>-h</code>の<ruby class="学年2"><rb>時</rb><rt>とき</rt></ruby>): <code>ruby,script,style,code,pre,samp,blockquote</code><br>デフォルト(<code>-a</code>の<ruby class="学年2"><rb>時</rb><rt>とき</rt></ruby>): <ruby class="学年1"><rb>空</rb><rt>から</rt></ruby></p>
 <pre><code># p要素をルビ化したいが、そのうち無視クラスを除外したいとき
-echo '&lt;p class="無視"&gt;猫&lt;/p&gt;&lt;p&gt;蝙蝠&lt;/p&gt;' | rubygana --html -s 'p' -n '.無視' --only-body
+echo &apos;&lt;p class=&quot;無視&quot;&gt;猫&lt;/p&gt;&lt;p&gt;蝙蝠&lt;/p&gt;&apos; | rubygana --html -s &apos;p&apos; -n &apos;.無視&apos; --only-body
 
 # 出力
-&lt;p class="無視"&gt;猫&lt;/p&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;
+&lt;p class=&quot;無視&quot;&gt;猫&lt;/p&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;
 
 
-# &lt;ruby&gt;&lt;rb&gt;該当&lt;/rb&gt;&lt;rt&gt;がいとう&lt;/rt&gt;&lt;/ruby&gt;した`-s`そのもの(と&lt;ruby&gt;&lt;rb&gt;子孫&lt;/rb&gt;&lt;rt&gt;しそん&lt;/rt&gt;&lt;/ruby&gt;)を&lt;ruby&gt;&lt;rb&gt;除外&lt;/rb&gt;&lt;rt&gt;じょがい&lt;/rt&gt;&lt;/ruby&gt;できるが、&lt;ruby&gt;&lt;rb&gt;該当&lt;/rb&gt;&lt;rt&gt;がいとう&lt;/rt&gt;&lt;/ruby&gt;しなかった`-s`の&lt;ruby&gt;&lt;rb&gt;子孫&lt;/rb&gt;&lt;rt&gt;しそん&lt;/rt&gt;&lt;/ruby&gt;は&lt;ruby&gt;&lt;rb&gt;除外&lt;/rb&gt;&lt;rt&gt;じょがい&lt;/rt&gt;&lt;/ruby&gt;できない
-echo '&lt;div&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;&lt;/div&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;' | rubygana --html -s 'body&gt;*' -n 'p' --only-body
+# 該当した`-s`そのもの(と子孫)を除外できるが、該当しなかった`-s`の子孫は除外できない
+echo &apos;&lt;div&gt;&lt;p&gt;猫&lt;/p&gt;&lt;/div&gt;&lt;p&gt;蝙蝠&lt;/p&gt;&apos; | rubygana --html -s &apos;body&gt;*&apos; -n &apos;p&apos; --only-body
 
-# &lt;ruby&gt;&lt;rb&gt;出力&lt;/rb&gt;&lt;rt&gt;しゅつりょく&lt;/rt&gt;&lt;/ruby&gt;
-&lt;div&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;&lt;/div&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;</code></pre><h4 id="--ng-elements--n-除外要素"><code>--ng-elements, -N '除外要素'</code></h4>
+# 出力
+&lt;div&gt;&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;/ruby&gt;&lt;/p&gt;&lt;/div&gt;&lt;p&gt;蝙蝠&lt;/p&gt;</code></pre>
+<h4 id="--ng-elements--n-除外要素"><code>--ng-elements, -N &apos;除外要素&apos;</code></h4>
 <p><code>-s</code>の<ruby class="学年1 学年4"><rb>子孫</rb><rt>しそん</rt></ruby>から<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>する<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>を<code>|</code><ruby class="学年3 学年2"><rb>区切</rb><rt>くぎ</rt></ruby>りで。<code>-s</code>そのものから<ruby class="学年6 学年2"><rb>除外</rb><rt>じょがい</rt></ruby>するには、<code>--not-selector</code><br>デフォルト: <code>ruby|script|style|code|pre|samp|blockquote</code></p>
 <pre><code># 絶対に除外したい要素で使う。(最低限scriptとstyleは除外推奨)
-echo '&lt;p&gt;猫と&lt;a&gt;蝙蝠&lt;/a&gt;&lt;/p&gt;' | rubygana --html -N 'a' --only-body
+echo &apos;&lt;p&gt;猫と&lt;a&gt;蝙蝠&lt;/a&gt;&lt;/p&gt;&apos; | rubygana --html -N &apos;a&apos; --only-body
 
 # 出力
-&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;/ruby&gt;と&lt;a&gt;&lt;ruby&gt;&lt;rb&gt;蝙蝠&lt;/rb&gt;&lt;rt&gt;こうもり&lt;/rt&gt;&lt;/ruby&gt;&lt;/a&gt;&lt;/p&gt;</code></pre><h4 id="--css--c-css"><code>--css, -c ['CSS']</code></h4>
+&lt;p&gt;&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;/ruby&gt;と&lt;a&gt;蝙蝠&lt;/a&gt;&lt;/p&gt;</code></pre>
+<h4 id="--css--c-css"><code>--css, -c [&apos;CSS&apos;]</code></h4>
 <p>head<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby><ruby class="学年4 学年7"><rb>末尾</rb><rt>まつび</rt></ruby>にstyle<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby><ruby class="学年3 学年4"><rb>追加</rb><rt>ついか</rt></ruby>。そのCSSを<ruby class="学年3 学年3"><rb>指定</rb><rt>してい</rt></ruby>。<ruby class="学年2 学年2"><rb>引数</rb><rt>ひきすう</rt></ruby><ruby class="学年4 学年5"><rb>省略</rb><rt>しょうりゃく</rt></ruby>で<ruby class="学年1 学年2"><rb>下記</rb><rt>かき</rt></ruby>デフォルトCSS。</p>
 <ul>
 <li><code>--html</code>のとき、ルビのフォントサイズ(<ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>に<ruby class="学年3"><rb>対</rb><rt>たい</rt></ruby>する<ruby class="学年3 学年5"><rb>倍率</rb><rt>ばいりつ</rt></ruby>)を0.5(<ruby class="学年7"><rb>又</rb><rt>また</rt></ruby>は--ruby-size)<ruby class="学年3"><rb>倍</rb><rt>ばい</rt></ruby>に。<ul>
@@ -305,7 +328,7 @@ echo '&lt;p&gt;猫と&lt;a&gt;蝙蝠&lt;/a&gt;&lt;/p&gt;' | rubygana --html -N '
 </ul>
 </li>
 <li><code>--add-class</code>のとき、<ruby class="学年5 学年2 学年3 学年1"><rb>常用漢字</rb><rt>じょうようかんじ</rt></ruby><ruby class="学年4 学年2"><rb>以外</rb><rt>いがい</rt></ruby>の<ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>のルビの<ruby class="学年2"><rb>色</rb><rt>いろ</rt></ruby>をDarkRedに。<ul>
-<li><code>ruby[class$="8"]&gt;rt{color:DarkRed;}</code></li>
+<li><code>ruby[class$=&quot;8&quot;]&gt;rt{color:DarkRed;}</code></li>
 </ul>
 </li>
 <li><code>--text-html</code>と<code>--md-html</code>のとき、<ruby class="学年1"><rb>空</rb><rt>から</rt></ruby>(のstyle<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>)</li>
@@ -320,9 +343,10 @@ echo '&lt;p&gt;猫と&lt;a&gt;蝙蝠&lt;/a&gt;&lt;/p&gt;' | rubygana --html -N '
 <pre><code>echo 猫なの? | rubygana -H --use-rp --only-body
 
  # 出力
-&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rp&gt;(&lt;/rp&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;&lt;/ruby&gt;なの?</code></pre><h4 id="--title--t-タイトル"><code>--title, -T 'タイトル'</code></h4>
+&lt;ruby&gt;&lt;rb&gt;猫&lt;/rb&gt;&lt;rp&gt;(&lt;/rp&gt;&lt;rt&gt;ねこ&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;&lt;/ruby&gt;なの?</code></pre>
+<h4 id="--title--t-タイトル"><code>--title, -T &apos;タイトル&apos;</code></h4>
 <p>title<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>の<ruby class="学年2 学年5"><rb>内容</rb><rt>ないよう</rt></ruby>。</p>
-<h4 id="--headline--l-見出し"><code>--headline, -L '見出し'</code></h4>
+<h4 id="--headline--l-見出し"><code>--headline, -L &apos;見出し&apos;</code></h4>
 <p>h1<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby>の<ruby class="学年2 学年5"><rb>内容</rb><rt>ないよう</rt></ruby>。<code>--text-html</code>と<code>--md-html</code>で<ruby class="学年3"><rb>使</rb><rt>つか</rt></ruby>う。</p>
 <h4 id="--switch"><code>--switch</code></h4>
 <p>ページトップにルビの<ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>スイッチを<ruby class="学年3 学年4"><rb>追加</rb><rt>ついか</rt></ruby>。<ruby class="学年3 学年1"><rb>漢字</rb><rt>かんじ</rt></ruby>の<ruby class="学年1 学年3"><rb>学習</rb><rt>がくしゅう</rt></ruby><ruby class="学年1 学年1"><rb>学年</rb><rt>がくねん</rt></ruby>ごとにルビをオン・オフ<ruby class="学年5 学年5"><rb>可能</rb><rt>かのう</rt></ruby>。</p>
@@ -332,34 +356,38 @@ echo '&lt;p&gt;猫と&lt;a&gt;蝙蝠&lt;/a&gt;&lt;/p&gt;' | rubygana --html -N '
 <p>rubyganaコマンド<ruby class="学年3 学年2"><rb>実行</rb><rt>じっこう</rt></ruby>に<ruby class="学年4"><rb>関</rb><rt>かん</rt></ruby>するコメントを<ruby class="学年4 学年7"><rb>末尾</rb><rt>まつび</rt></ruby>に<ruby class="学年3 学年4"><rb>追加</rb><rt>ついか</rt></ruby>。</p>
 <p><code>--html</code>のとき: body<ruby class="学年4 学年5"><rb>要素</rb><rt>ようそ</rt></ruby><ruby class="学年4 学年7"><rb>末尾</rb><rt>まつび</rt></ruby>に<ruby class="学年4 学年2"><rb>改行</rb><rt>かいぎょう</rt></ruby>と<ruby class="学年1 学年2"><rb>下記</rb><rt>かき</rt></ruby>4<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby><ruby class="学年7 学年1"><rb>挿入</rb><rt>そうにゅう</rt></ruby>。スタイルが<code>display:none</code>のため、ソースからなら<ruby class="学年5 学年6"><rb>確認</rb><rt>かくにん</rt></ruby>できるコメント。</p>
 <pre><code>&lt;!-- この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。 --&gt;
-&lt;pre style="display:none;"&gt;&lt;code&gt;
+&lt;pre style=&quot;display:none;&quot;&gt;&lt;code&gt;
 ここに実際に実行したコマンドオプション・引数が入る
-&lt;/code&gt;&lt;/pre&gt;</code></pre><p><code>--text</code>のとき: <ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby><ruby class="学年4 学年7"><rb>末尾</rb><rt>まつび</rt></ruby>に<ruby class="学年4 学年2"><rb>改行</rb><rt>かいぎょう</rt></ruby>と<ruby class="学年1 学年2"><rb>下記</rb><rt>かき</rt></ruby>2<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby><ruby class="学年3 学年2"><rb>追記</rb><rt>ついき</rt></ruby>。</p>
+&lt;/code&gt;&lt;/pre&gt;</code></pre>
+<p><code>--text</code>のとき: <ruby class="学年1 学年2"><rb>文書</rb><rt>ぶんしょ</rt></ruby><ruby class="学年4 学年7"><rb>末尾</rb><rt>まつび</rt></ruby>に<ruby class="学年4 学年2"><rb>改行</rb><rt>かいぎょう</rt></ruby>と<ruby class="学年1 学年2"><rb>下記</rb><rt>かき</rt></ruby>2<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby><ruby class="学年3 学年2"><rb>追記</rb><rt>ついき</rt></ruby>。</p>
 <pre><code># この文書のルビ振りは下記コマンド(rubygana VERSION)を用いました。
-# ここに実際に実行したコマンドオプション・引数が入る</code></pre><h4 id="--debug--d"><code>--debug, -d</code></h4>
+# ここに実際に実行したコマンドオプション・引数が入る</code></pre>
+<h4 id="--debug--d"><code>--debug, -d</code></h4>
 <p><ruby class="学年3 学年3"><rb>開発</rb><rt>かいはつ</rt></ruby><ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>オプション。kuromojiによる<ruby class="学年5 学年7"><rb>解析</rb><rt>かいせき</rt></ruby><ruby class="学年7 学年2"><rb>詳細</rb><rt>しょうさい</rt></ruby>(<ruby class="学年2 学年5 学年5"><rb>形態素</rb><rt>けいたいそ</rt></ruby>)などが<ruby class="学年5 学年6"><rb>確認</rb><rt>かくにん</rt></ruby>できる。<code>-dd</code>でオプション<ruby class="学年2 学年2"><rb>引数</rb><rt>ひきすう</rt></ruby>の<ruby class="学年5 学年6"><rb>確認</rb><rt>かくにん</rt></ruby>だけして<ruby class="学年3 学年7"><rb>終了</rb><rt>しゅうりょう</rt></ruby>。</p>
 <h4 id="--verbose--v"><code>--verbose, -v</code></h4>
 <p><ruby class="学年3 学年3"><rb>開発</rb><rt>かいはつ</rt></ruby><ruby class="学年2"><rb>用</rb><rt>よう</rt></ruby>オプション。debug<ruby class="学年5 学年5"><rb>情報</rb><rt>じょうほう</rt></ruby>を<ruby class="学年5"><rb>増</rb><rt>ふ</rt></ruby>やす。</p>
 <hr>
 <h2 id="1行ルビ族">1<ruby class="学年2"><rb>行</rb><rt>ぎょう</rt></ruby>ルビ<ruby class="学年3"><rb>族</rb><rt>ぞく</rt></ruby></h2>
 <pre><code># ダウンロードし、ルビ化し、firefoxで開く
-page='ja.wikipedia.org/wiki/不思議の国のアリス'; wget --page-requisites --convert-links "https://$page" && rubygana $page &gt; $page.ruby.html; firefox $page.ruby.html &
+page=&apos;ja.wikipedia.org/wiki/不思議の国のアリス&apos;; wget --page-requisites --convert-links &quot;https://$page&quot; &amp;&amp; rubygana $page &gt; $page.ruby.html; firefox $page.ruby.html &amp;
 
 
 # 入力の文字コードはUTF-8のみ受付:
 # 違うならiconvコマンドなどで変換してから
-cat shift-jis.txt | iconv -f 'shift-jis' -t 'utf8' | rubygana
+cat shift-jis.txt | iconv -f &apos;shift-jis&apos; -t &apos;utf8&apos; | rubygana
 # (標準出力の文字コードは端末の設定で変更)
 
 
 # サンプルテキストを出力し、それをHTML化し、次にh1だけカタカナでルビ振りし、そしてp要素を2年生超でルビ振りし、
 # そして学年クラス名を付加して中学生以上常用漢字ルビは青色で常用漢字以外ルビは赤色スタイルにして、
 # それをalice.htmlとして保存し、それをFirefoxで開く。
-rubygana -A | rubygana -w | rubygana -HKs 'h1' | rubygana -s 'p' -g 2 | rubygana -ac 'ruby[class$="7"]&gt;rt{color:blue;}ruby[class$="8"]&gt;rt{color:red;}' &gt; alice.html; firefox alice.html &</code></pre><hr>
+rubygana -A | rubygana -w | rubygana -HKs &apos;h1&apos; | rubygana -s &apos;p&apos; -g 2 | rubygana -ac &apos;ruby[class$=&quot;7&quot;]&gt;rt{color:blue;}ruby[class$=&quot;8&quot;]&gt;rt{color:red;}&apos; &gt; alice.html; firefox alice.html &amp;</code></pre>
+<hr>
 
 
-<!-- この文書のルビ振りは下記コマンド(rubygana 0.7.3)を用いました。 -->
+<!-- この文書のルビ振りは下記コマンド(rubygana 0.8.1)を用いました。 -->
 <pre style="display:none;"><code>
 rubygana --readme-html
 </code></pre>
+
 </body></html>
