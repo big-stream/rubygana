@@ -484,8 +484,8 @@ function comment検証() { // undefinedかstringに
 
   const ヘルプ = require('../lib/help.js')
   const コメント = `この文書のルビ振りは下記コマンド(rubygana ${ヘルプ.バージョン})を用いました。`
-  if (オプション.グループ === '--html') {
-    オプション.comment = '\n\n<!-- ' + コメント + ' -->\n<pre style="display:none;"><code>\n' + コマンド + '\n</code></pre>\n'
+  if (オプション.グループ === '--html') { // コメント中の--不可
+    オプション.comment = `\n<!-- ${コメント} -->\n<pre style="display:none;"><code>\n${コマンド}\n</code></pre>\n`
   } else { // --text
     オプション.comment = '\n\n# ' + コメント + '\n# ' + コマンド
   }
@@ -498,27 +498,22 @@ function コマンド分岐(入力) {
   if (オプション.グループ === '--text-html') {
     require('../lib/text-html.js')(入力, オプション, (HTML) => {
       process.stdout.write(HTML)
-      終了()
     })
   } else if (オプション.グループ === '--md-html') {
     require('../lib/md-html.js')(入力, オプション, (HTML) => {
       process.stdout.write(HTML)
-      終了()
     })
   } else if (オプション.グループ === '--html') {
     require('../lib/html.js')(入力, オプション, (ルビ付き) => {
       process.stdout.write(ルビ付き)
-      終了()
     })
   } else if (オプション.グループ === '--text') {
     require('../lib/text.js')(入力, オプション, (ルビ付き) => {
       process.stdout.write(ルビ付き)
-      終了()
     })
   } else if (オプション.グループ === '--add-class') {
     require('../lib/add-class.js')(入力, オプション, (クラス付き) => {
       process.stdout.write(クラス付き)
-      終了()
     })
   } else if (オプション.グループ === '--readme-html') {
     readme_html(入力)
@@ -572,7 +567,6 @@ function readme_html(入力) {
       require('../lib/add-class.js')(ルビ付き, オプション, (クラス付き) => {
         process.stdout.write(クラス付き)
         オプション初期化()
-        終了()
       })
     })
   })
